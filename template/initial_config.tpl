@@ -22,7 +22,7 @@ interface Management0/0
 !
 !
 banner motd +--------------------------------------------------------------------------+
-banner motd |                 *   WARNING NOTICE TO USERS   *                      |
+banner motd |                 *   WARNING NOTICE TO USERS   *                          |
 banner motd | It is for authorized  users only.  Unauthorized users  are prohibited.   |
 banner motd +--------------------------------------------------------------------------+
 !
