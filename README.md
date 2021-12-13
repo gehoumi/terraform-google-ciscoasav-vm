@@ -19,8 +19,9 @@ These sections describe requirements for using this module.
 
 The ASAv deployment requires theses three VPC networks to be created prior to deploying the ASAv.
 
-Functional example is included in the
-[examples](./examples/) directory.
+## Examples
+
+Functional example is included in the [examples](./examples/) directory, check it for further information.
 
 ## Usage
 
@@ -45,8 +46,8 @@ module "ciscoasav" {
   inside_subnetwork_cidr  = "<INSIDE SUBNETWORK CIDR>"
   outside_subnetwork_cidr = "<OUTSIDE SUBNETWORK CIDR>"
 
-  admin_password  = "passwd#cisco$123"
-  enable_password = "cisco$12345"
+  admin_password  = var.admin_password
+  enable_password = var.enable_password
 
 }
 ```
@@ -67,7 +68,7 @@ The external SSH access to ASA management Public IP is protected by firewall rul
 
 
 
-## Reference
+## References
 
-[Cisco ASAv Getting Started Guide]: https://www.cisco.com/c/en/us/td/docs/security/asa/asa916/asav/getting-started/asav-916-gsg/asav_gcp.html
-[terraform-google-modules/terraform-google-vm]: https://github.com/terraform-google-modules/terraform-google-vm/tree/master/modules/instance_template
+- [Cisco ASAv Getting Started Guide](https://www.cisco.com/c/en/us/td/docs/security/asa/asa916/asav/getting-started/asav-916-gsg/asav_gcp.html)
+- [terraform-google-modules/terraform-google-vm](https://github.com/terraform-google-modules/terraform-google-vm/tree/master/modules/instance_template)
