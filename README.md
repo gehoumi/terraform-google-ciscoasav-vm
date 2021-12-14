@@ -23,6 +23,8 @@ The ASAv deployment requires theses three VPC networks to be created prior to de
 
 Functional example is included in the [examples](https://github.com/gehoumi/terraform-google-ciscoasav-vm/tree/main/examples) directory, check it for further information.
 
+*Warning* The secret data will be stored in the raw state as plain-text and the secret can be displayed in console output. I recommend using an encrypted password as explain in [basic_example_2](https://github.com/gehoumi/terraform-google-ciscoasav-vm/tree/main/examples/basic_example_2)
+
 ## Usage
 
 Basic usage of this module is as follows:
@@ -48,9 +50,6 @@ module "ciscoasav" {
   outside_subnetwork_cidr = local.vpc.outside.subnetwork_ip_cidr_range
 
   public_ip_whitelist_mgmt_access = var.public_ip_whitelist_mgmt_access
-
-  admin_password  = module.admin_password.secret_data
-  enable_password = module.enable_password.secret_data
 
   depends_on = [
     module.vpc_management,

@@ -5,7 +5,6 @@ This example illustrates how to use the `ciscoasav-vm` module. It will set up 3 
 ## Set variables
 
 - Edit `variables.tf` to set your `project_id` and your `project_number`
-
 - Get your public IP and set the value to the variable `public_ip_whitelist_mgmt_access`
 
 ```
@@ -42,4 +41,4 @@ Once the ASAv instance is created, wait few minute and try SSH
 ssh admin@<asa_external_mgmt_ip>
 ```
 
-You should now be logged in as a admin user `cisco-asav-1#` with the prefix of `#` indicating you have logged in privilege level mode. You should also notice that the enable password is not asked, because `auto-enable` authorization configuration is done in the [initial_config.tpl](../../template)
+You should now be logged in as a admin user `cisco-asav-1#` with the prefix of `#` indicating you have logged in privilege level mode. You should also notice that the enable password is not asked, because `auto-enable` authorization configuration is done in the [initial_config.tpl](https://github.com/gehoumi/terraform-google-ciscoasav-vm/tree/main/template)
