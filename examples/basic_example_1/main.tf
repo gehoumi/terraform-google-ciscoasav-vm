@@ -51,24 +51,6 @@ module "vpc_outside" {
 }
 
 /******************************************
-	ASAv Secrets
- *****************************************/
-
-module "admin_password" {
-  source = "../modules/secrets"
-
-  project_id = var.project_id
-  secret_id  = "asav-admin-password"
-}
-
-module "enable_password" {
-  source = "../modules/secrets"
-
-  project_id = var.project_id
-  secret_id  = "asav-enable-password"
-}
-
-/******************************************
 	ASAv Instance
  *****************************************/
 
@@ -91,9 +73,6 @@ module "ciscoasav" {
   outside_subnetwork_cidr = local.vpc.outside.subnetwork_ip_cidr_range
 
   public_ip_whitelist_mgmt_access = var.public_ip_whitelist_mgmt_access
-
-  admin_password  = module.admin_password.secret_data
-  enable_password = module.enable_password.secret_data
 
   depends_on = [
     module.vpc_management,

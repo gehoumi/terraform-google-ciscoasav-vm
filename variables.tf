@@ -127,10 +127,12 @@ variable "admin_password" {
   description = "ASAv administrator password"
   type        = string
   sensitive   = true
+  default     = null
 }
 
 variable "enable_password" {
   description = "The ASAv enable password"
   type        = string
   sensitive   = true
+  default     = null
 }

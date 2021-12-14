@@ -4,7 +4,35 @@ locals {
   mgmt_interface_ip_address    = cidrhost(var.mgmt_subnetwork_cidr, 3)
   inside_interface_ip_address  = cidrhost(var.inside_subnetwork_cidr, 3)
   outside_interface_ip_address = cidrhost(var.outside_subnetwork_cidr, 3)
+
+  # If password is not set, use the generated password by the module secrets
+  admin_password  = var.admin_password == null ? module.admin_password.secret_data : var.admin_password
+  enable_password = var.enable_password == null ? module.enable_password.secret_data : var.enable_password
 }
+
+/******************************************
+	Secrets to create if password is not set
+ *****************************************/
+
+module "admin_password" {
+  source        = "./modules/secrets"
+  create_secret = var.admin_password == null
+
+  project_id = var.project_id
+  secret_id  = "asav-admin-password"
+}
+
+module "enable_password" {
+  source        = "./modules/secrets"
+  create_secret = var.enable_password == null
+
+  project_id = var.project_id
+  secret_id  = "asav-enable-password"
+}
+
+/******************************************
+	data template file
+ *****************************************/
 
 data "template_file" "initial_config" {
   template = file("${path.module}/template/initial_config.tpl")
@@ -16,8 +44,8 @@ data "template_file" "initial_config" {
     outside_subnetwork_cidr      = var.outside_subnetwork_cidr
 
     admin_username  = var.admin_username
-    admin_password  = var.admin_password
-    enable_password = var.enable_password
+    admin_password  = local.admin_password
+    enable_password = local.enable_password
   }
 }
 
