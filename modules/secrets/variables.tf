@@ -23,3 +23,9 @@ variable "label" {
   description = "label of the secret"
   default     = "created_by_terraform"
 }
+
+variable "create_secret" {
+  description = "If the secret should be created"
+  type        = bool
+  default     = true
+}

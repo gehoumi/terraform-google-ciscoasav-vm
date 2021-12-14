@@ -25,7 +25,8 @@ resource "google_secret_manager_secret" "secret_basic" {
 }
 
 resource "google_secret_manager_secret_version" "secret_version_basic" {
-  secret = google_secret_manager_secret.secret_basic.id
+  count = var.create_secret ? 1 : 0
 
+  secret      = google_secret_manager_secret.secret_basic.id
   secret_data = random_password.password.result
 }
