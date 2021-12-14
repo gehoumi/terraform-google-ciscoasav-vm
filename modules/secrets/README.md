@@ -13,7 +13,7 @@ Basic usage of this module is as follows:
 
 ```hcl
 module "admin_password" {
-  source = "gehoumi/terraform-google-ciscoasav-vm//modules/secrets"
+  source = "gehoumi/ciscoasav-vm/google//modules/secrets"
 
   project_id = var.project_id
   secret_id = "asav-admin-password"
