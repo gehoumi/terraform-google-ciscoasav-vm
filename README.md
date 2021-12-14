@@ -29,35 +29,45 @@ Basic usage of this module is as follows:
 
 ```hcl
 module "ciscoasav" {
-  source = "../../modules/terraform-google-ciscoasav-vm"
-  name   = "cisco-asav-1"
+  source = "gehoumi/ciscoasav-vm/google"
+
+  name           = "cisco-asav-1"
   project_id     = var.project_id
-  project_number = "<PROJECT ID>"
+  project_number = var.project_number
 
-  mgmt_network    = "<MGMT NETWORK NAME>"
-  inside_network  = "<INSIDE NETWORK NAME>"
-  outside_network = "<OUTSIDE NETWORK NAME>"
+  mgmt_network    = local.vpc.management.network_name
+  inside_network  = local.vpc.inside.network_name
+  outside_network = local.vpc.outside.network_name
 
-  mgmt_subnetwork    = "<MGMT SUBNETWORK NAME>"
-  inside_subnetwork  = "<INSIDE SUBNETWORK NAME>"
-  outside_subnetwork = "<OUTSIDE SUBNETWORK NAME>"
+  mgmt_subnetwork    = local.vpc.management.subnetwork_name
+  inside_subnetwork  = local.vpc.inside.subnetwork_name
+  outside_subnetwork = local.vpc.outside.subnetwork_name
 
-  mgmt_subnetwork_cidr    = "<MGMT SUBNETWORK CIDR>"
-  inside_subnetwork_cidr  = "<INSIDE SUBNETWORK CIDR>"
-  outside_subnetwork_cidr = "<OUTSIDE SUBNETWORK CIDR>"
+  mgmt_subnetwork_cidr    = local.vpc.management.subnetwork_ip_cidr_range
+  inside_subnetwork_cidr  = local.vpc.inside.subnetwork_ip_cidr_range
+  outside_subnetwork_cidr = local.vpc.outside.subnetwork_ip_cidr_range
 
-  admin_password  = var.admin_password
-  enable_password = var.enable_password
+  public_ip_whitelist_mgmt_access = var.public_ip_whitelist_mgmt_access
+
+  admin_password  = module.admin_password.secret_data
+  enable_password = module.enable_password.secret_data
+
+  depends_on = [
+    module.vpc_management,
+    module.vpc_inside,
+    module.vpc_outside,
+  ]
 
 }
 ```
 
 ### Enable APIs
 
-A project with the following API enabled must be used to host the
+A project with the following APIs enabled must be used to host the
 resources of this module:
 
 - Compute Engine API: `compute.googleapis.com`
+- Secret Manager API: `secretmanager.googleapis.com`
 
 
 ### Permissions

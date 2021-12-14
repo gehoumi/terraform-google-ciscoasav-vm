@@ -1,6 +1,7 @@
 /******************************************
 	VPC configuration
  *****************************************/
+
 module "vpc_management" {
   source  = "terraform-google-modules/network/google"
   version = "~> 3.0"

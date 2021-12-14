@@ -2,16 +2,18 @@
 variable "project_id" {
   description = "The ID of the Project to which the resources belong"
   type        = string
+  default     = ""
 }
 
 
 variable "project_number" {
   description = "The Project number to which the resources belong"
   type        = string
+  default     = ""
 }
 
 variable "public_ip_whitelist_mgmt_access" {
-  default = ["0.0.0.0/0"]
+  default = [""]
 }
 
 variable "region" {
