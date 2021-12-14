@@ -1,14 +1,23 @@
 
 variable "project_id" {
-  default = "<your_project_id>"
+  description = "The ID of the Project to which the resources belong"
+  type        = string
 }
 
+
 variable "project_number" {
-  default = "<your_project_number>"
+  description = "The Project number to which the resources belong"
+  type        = string
 }
 
 variable "public_ip_whitelist_mgmt_access" {
-  default = ["<your_internet_public_ip>"]
+  default = ["0.0.0.0/0"]
+}
+
+variable "region" {
+  description = "The region to construct the ASAv resources in"
+  type        = string
+  default     = "us-central1"
 }
 
 variable "admin_password" {

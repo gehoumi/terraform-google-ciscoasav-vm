@@ -1,4 +1,4 @@
-# Example
+# Basic Example
 
 This example will set up 3 basics networks, subnets and Cisco ASAv instance for you to log into using SSH. You'll notice that the module create a firewall rule that allows SSH and HTTPS access on the ASAv management interface, for simplicity we will restrict to only one Public IP. This should be scoped down to allow access from specific trusted hosts.
 
@@ -72,4 +72,4 @@ Once the ASAv instance is created, wait few minute and try SSH
 ssh admin@<asa_external_mgmt_ip>
 ```
 
-You should now be logged in as a admin user `cisco-asav-1#` with the prefix of `#` indicating you have logged in privilege level mode. You should also notice that the enable password is not asked, because `auto-enable` authorization configuration is done in the [initial_config.tpl](../template)
+You should now be logged in as a admin user `cisco-asav-1#` with the prefix of `#` indicating you have logged in privilege level mode. You should also notice that the enable password is not asked, because `auto-enable` authorization configuration is done in the [initial_config.tpl](../../template)

@@ -21,7 +21,7 @@ The ASAv deployment requires theses three VPC networks to be created prior to de
 
 ## Examples
 
-Functional example is included in the [examples](./examples/) directory, check it for further information.
+Functional example is included in the [examples](https://github.com/gehoumi/terraform-google-ciscoasav-vm/tree/main/examples) directory, check it for further information.
 
 ## Usage
 
