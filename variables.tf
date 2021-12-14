@@ -10,7 +10,7 @@ variable "project_id" {
 }
 
 variable "project_number" {
-  description = "The ID of the Project to which the resources belong"
+  description = "The Project number to which the resources belong"
   type        = string
 }
 
