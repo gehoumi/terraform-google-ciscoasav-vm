@@ -1,6 +1,6 @@
 # secrets
 
-This module will:
+This submodule will:
 
 - create a random password, the result is treated as sensitive.
 - create google secret manager and secret version to store the secret data.
@@ -9,7 +9,7 @@ This module will:
 
 ## Usage
 
-Basic usage of this module is as follows:
+Basic usage of this submodule is as follows:
 
 ```hcl
 module "admin_password" {
