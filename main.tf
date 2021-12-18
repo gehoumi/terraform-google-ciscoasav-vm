@@ -8,6 +8,49 @@ locals {
   # If password is not set, use the generated password by the module secrets
   admin_password  = var.admin_password == null ? module.admin_password.secret_data : var.admin_password
   enable_password = var.enable_password == null ? module.enable_password.secret_data : var.enable_password
+
+}
+
+/******************************************
+	VPC configurations to create if not specified
+ *****************************************/
+module "vpc_management" {
+  source = "./modules/vpc-network"
+  count  = var.create_mgmt_vpc_network ? 1 : 0
+
+  project_id   = var.project_id
+  network_name = var.mgmt_network
+
+  subnetwork_name          = var.mgmt_subnetwork
+  subnetwork_ip_cidr_range = var.mgmt_subnetwork_cidr
+  subnet_region            = var.region
+
+}
+
+module "vpc_inside" {
+  source = "./modules/vpc-network"
+  count  = var.create_inside_vpc_network ? 1 : 0
+
+  project_id   = var.project_id
+  network_name = var.inside_network
+
+  subnetwork_name          = var.inside_subnetwork
+  subnetwork_ip_cidr_range = var.inside_subnetwork_cidr
+  subnet_region            = var.region
+
+}
+
+module "vpc_outside" {
+  source = "./modules/vpc-network"
+  count  = var.create_outside_vpc_network ? 1 : 0
+
+  project_id   = var.project_id
+  network_name = var.outside_network
+
+  subnetwork_name          = var.outside_subnetwork
+  subnetwork_ip_cidr_range = var.outside_subnetwork_cidr
+  subnet_region            = var.region
+
 }
 
 /******************************************

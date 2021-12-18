@@ -14,6 +14,24 @@ variable "project_number" {
   type        = string
 }
 
+variable "create_mgmt_vpc_network" {
+  type        = bool
+  description = "When set to true, this module will create the vpc network. Default is 'false' the vpc network exist and the module will use it to create the ASA)"
+  default     = false
+}
+
+variable "create_inside_vpc_network" {
+  type        = bool
+  description = "When set to true, this module will create the vpc network. Default is 'false' the vpc network exist and the module will use it to create the ASA)"
+  default     = false
+}
+
+variable "create_outside_vpc_network" {
+  type        = bool
+  description = "When set to true, this module will create the vpc network. Default is 'false' the vpc network exist and the module will use it to create the ASA)"
+  default     = false
+}
+
 variable "mgmt_network" {
   description = "The name of the VPC network to attach the ASAv mgmt interface"
   type        = string
