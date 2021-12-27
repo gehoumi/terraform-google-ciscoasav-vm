@@ -2,7 +2,7 @@
 # Terraform-google-ciscoasav-vm
 Terraform module to deploy Cisco ASAv on GCP
 
-The ASAv requires a minimum of 3 interfaces. This module will deploy a Cisco ASAv in GCP with 3 interfaces.
+The ASAv in this module requires a minimum of 3 interfaces. The module will deploy a Cisco ASAv in GCP with 3 interfaces.
 
 This module will:
 
@@ -17,11 +17,12 @@ This module will:
 
 These sections describe requirements for using this module.
 ### Interface requirements:
-- Management interface—Used to connect the ASAv to the ASDM; can’t be used for through traffic.
-- Inside interface—Used to connect the ASAv to inside hosts.
-- Outside interface—Used to connect the ASAv to the public network.
 
-The ASAv deployment requires theses three VPC networks to be created prior to deploying the ASAv.
+Make sure three VPCs are available or created prior to deploy the ASAv. The VPCs network requires 3 subnets for:
+- Management interface — Used to manage the ASAv (can’t be used for through traffic).
+- Inside interface — Used to connect the ASAv to inside hosts.
+- Outside interface — Used to connect the ASAv to the public network.
+
 
 ## Examples
 
@@ -67,7 +68,7 @@ resources of this module:
 
 ### Permissions
 
-This module use the default service account to create ASAv instance, and create an admin account for the users or any automation tools who need access the ASAv.
+This module use the default service account to create ASAv instance, and create an admin account for admin user or for any automation tools who need access the ASAv.
 
 The external SSH access to ASA management Public IP is protected by firewall rules. By default the firewall rule allow access only from the deployment workstation public IP, but you can override it with variable or hardcoded value if necessary.
 

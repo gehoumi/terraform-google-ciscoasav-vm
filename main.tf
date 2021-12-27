@@ -125,7 +125,7 @@ resource "google_compute_instance" "asav_vm" {
     subnetwork_project = var.project_id
 
     access_config {
-      nat_ip       = module.public_address.addresses.0
+      nat_ip       = google_compute_address.public_default[0].address
       network_tier = "PREMIUM"
     }
   }
@@ -144,7 +144,7 @@ resource "google_compute_instance" "asav_vm" {
     subnetwork_project = var.project_id
 
     access_config {
-      nat_ip       = module.public_address.addresses.1
+      nat_ip       = google_compute_address.public_default[1].address
       network_tier = "PREMIUM"
     }
   }
@@ -210,14 +210,9 @@ resource "google_compute_firewall" "vpc_outside_ingress_allow_https" {
 /******************************************
   IP address reservation
  *****************************************/
-module "public_address" {
-  source       = "terraform-google-modules/address/google"
-  version      = "3.0.0"
-  project_id   = var.project_id
-  region       = var.region
-  address_type = "EXTERNAL"
-  names = [
-    "external-public-management-ip",
-    "external-public-outside-ip",
-  ]
+
+resource "google_compute_address" "public_default" {
+  count   = true ? length(var.addresses_names) : 0
+  project = var.project_id
+  name    = var.addresses_names[count.index]
 }

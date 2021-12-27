@@ -5,12 +5,12 @@ output "hostname" {
 
 output "asa_external_mgmt_ip" {
   description = "address value create for external mgmt access"
-  value       = module.public_address.addresses.0
+  value       = google_compute_address.public_default[0].address
 }
 
 output "asa_external_outside_ip" {
   description = "address value create for external outside"
-  value       = module.public_address.addresses.1
+  value       = google_compute_address.public_default[1].address
 }
 
 output "your_workstation_public_ip" {

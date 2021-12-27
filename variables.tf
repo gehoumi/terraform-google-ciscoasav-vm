@@ -73,9 +73,18 @@ variable "zone" {
   default     = "us-central1-a"
 }
 
+variable "addresses_names" {
+  description = "List of Global IP (Public) addresses for external management and outside interfaces"
+  type        = list(string)
+  default = [
+    "external-public-management-ip",
+    "external-public-outside-ip",
+  ]
+}
+
 variable "public_ip_whitelist_mgmt_access" {
   description = "List of Public IP address to that need to manage ASAv instance. Default is your workstation public IP"
-  type        = list(any)
+  type        = list(string)
   default     = null
 }
 
