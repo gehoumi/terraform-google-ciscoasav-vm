@@ -8,7 +8,7 @@ This module will:
 
 - Create two external IP addresses for ASAv management and for the public outside network
 - Create two firewall rules to allow SSH and HTTPS access to the ASA management, and to allow HTTPS from anywhere to ASAv outside interface.
-- Fetch your workstation public IP and add it to the IP whitelist for VPC firewall rule for the ASA management access after the deployment.
+- Fetch the deployment workstation public IP and add it to the IP whitelist for VPC firewall rule for the ASA management access after the deployment.
 - Create a GCE managed instance to host the ASAv, with a startup script that provides the day0 configuration for the ASAv. The day0 configuration is applied during the firstboot of the ASAv.
 
 
@@ -69,7 +69,7 @@ resources of this module:
 
 This module use the default service account to create ASAv instance, and create an admin account for the users or any automation tools who need access the ASAv.
 
-The external SSH access to ASA management Public IP is protected by firewall rules. By default the firewall rule allow access from anywhere, make sure to restrict access a list of your public IPs.
+The external SSH access to ASA management Public IP is protected by firewall rules. By default the firewall rule allow access only from the deployment workstation public IP, but you can override it with variable or hardcoded value if necessary.
 
 
 
