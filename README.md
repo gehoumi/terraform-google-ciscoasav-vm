@@ -84,7 +84,7 @@ module "ciscoasav" {
 | disk\_size\_gb | Boot disk size in GB | `string` | `"10"` | no |
 | disk\_type | Boot disk type, can be either pd-ssd, local-ssd, or pd-standard | `string` | `"pd-standard"` | no |
 | disk\_labels | Labels to be assigned to boot disk, provided as a map | `map(string)` | `{}` | no |  
-| admin\_username | ASAv administrator username. Default is admin | `string` | `null` | no |
+| admin\_username | ASAv administrator username. Default is admin | `string` | `admin` | no |
 | admin\_password | ASAv administrator password | `string` | `null` | no |
 | enable\_password | The ASAv enable password | `string` | `null` | no |
 
