@@ -10,12 +10,41 @@ This submodule will:
 Basic usage of this submodule is as follows:
 
 ```hcl
-module "admin_password" {
-  source = "gehoumi/ciscoasav-vm/google//modules/secrets"
+module "vpc_management" {
+  source = "./modules/vpc-network"
 
-  project_id = var.project_id
-  secret_id = "asav-admin-password"
+  project_id   = var.project_id
+  network_name = var.mgmt_network
+
+  subnetwork_name          = var.mgmt_subnetwork
+  subnetwork_ip_cidr_range = var.mgmt_subnetwork_cidr
+  subnet_region            = var.region
 
 }
+
+module "vpc_inside" {
+  source = "./modules/vpc-network"
+
+  project_id   = var.project_id
+  network_name = var.inside_network
+
+  subnetwork_name          = var.inside_subnetwork
+  subnetwork_ip_cidr_range = var.inside_subnetwork_cidr
+  subnet_region            = var.region
+
+}
+
+module "vpc_outside" {
+  source = "./modules/vpc-network"
+
+  project_id   = var.project_id
+  network_name = var.outside_network
+
+  subnetwork_name          = var.outside_subnetwork
+  subnetwork_ip_cidr_range = var.outside_subnetwork_cidr
+  subnet_region            = var.region
+
+}
+
 
 ```
