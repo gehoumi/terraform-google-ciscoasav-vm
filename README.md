@@ -61,9 +61,9 @@ module "ciscoasav" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| name | The hostname to assign to the Cisco ASAv | `string` | `"true"` | no |
-| project\_id | The ID of the Project to which the resources belong | `string` | `"false"` | yes |
-| project\_number | The Project number to which the resources belong | `string` | `"false"` | yes |
+| name | The hostname to assign to the Cisco ASAv | `string` | `"ciscoasav-1"` | no |
+| project\_id | The ID of the Project to which the resources belong | `string` | `""` | yes |
+| project\_number | The Project number to which the resources belong | `string` | `""` | yes |
 | region | The region to construct the ASAv resources in | `string` | `"us-central1"` | no |
 | zone | The zone to construct the ASAv resources in | `string` | `"us-central1-a"` | no |
 | mgmt\_network | The name of the VPC network to attach the ASAv mgmt interface | `string` | `""` | yes |
