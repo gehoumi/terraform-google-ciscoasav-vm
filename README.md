@@ -2,7 +2,7 @@
 # Automated Cisco ASAv deployment on GCP with Terraform
 [Terraform module](https://registry.terraform.io/modules/gehoumi/ciscoasav-vm/google/latest) to deploy Cisco Adaptive Security Virtual Appliance (ASAv) on Google Cloud Platform (GCP).
 
-The ASAv runs the same software as physical Cisco ASAs and can be deployed in the public GCP cloud. It can then be configured as a VPN concentrator on the cloud to allow for supporting IPSec/SSL remote access VPN's to protect cloud workloads, or can be used for IPSec site-to-site, etc.
+The [ASAv](https://www.cisco.com/c/en/us/td/docs/security/asa/asa916/asav/getting-started/asav-916-gsg/asav_gcp.html) runs the same software as physical Cisco ASAs and can be deployed in the public [GCP cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects). It can then be configured as a VPN concentrator for remote access IPSec/SSL VPN's to protect cloud workloads, or can be used for IPSec site-to-site, etc.
 
 The ASAv in this module requires a minimum of 3 interfaces. The module will deploy the ASAv in GCP with 3 interfaces and minimal configuration.
 
