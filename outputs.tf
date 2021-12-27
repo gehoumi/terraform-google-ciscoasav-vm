@@ -12,3 +12,7 @@ output "asa_external_outside_ip" {
   description = "address value create for external outside"
   value       = module.public_address.addresses.1
 }
+
+output "your_workstation_public_ip" {
+  value = data.http.workstation_public_ip.body
+}

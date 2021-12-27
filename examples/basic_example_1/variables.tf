@@ -12,9 +12,6 @@ variable "project_number" {
   default     = ""
 }
 
-variable "public_ip_whitelist_mgmt_access" {
-  default = [""]
-}
 
 variable "region" {
   description = "The region to construct the ASAv resources in"

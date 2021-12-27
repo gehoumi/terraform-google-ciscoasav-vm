@@ -1,15 +1,10 @@
 # Basic Example 2 : Bring your own passwords
 
-This basic example will set up 3 basics networks, subnets and Cisco ASAv instance for you to log into using SSH with your own secrets. You'll notice that the module create a firewall rule that allows SSH and HTTPS access on the ASAv management interface, for simplicity we will restrict to only one Public IP. This should be scoped down to allow access from specific trusted hosts.
+This basic example will set up 3 basics networks, subnets and Cisco ASAv instance for you to log into using SSH with your own secrets. You'll notice that the module create a firewall rule that allows SSH and HTTPS access on the ASAv management interface, for simplicity the module will fetch your workstation public IP and add it to the IP whitelist for the management access. This was scoped down to allow access from your specific trusted hosts.
 
 ## Usage
 
 - Edit `variables.tf` to set your `project_id` and your `project_number`
-- Get your public IP and set the value to the variable `public_ip_whitelist_mgmt_access`
-
-```
-dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F'"' '{ print $2}'
-```
 
 ### Encrypted passwords
 

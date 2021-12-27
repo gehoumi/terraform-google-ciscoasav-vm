@@ -74,8 +74,9 @@ variable "zone" {
 }
 
 variable "public_ip_whitelist_mgmt_access" {
-  description = "List of Public IP address to that need to manage ASAv instance. Default is from everywhere"
-  default     = ["0.0.0.0/0"]
+  description = "List of Public IP address to that need to manage ASAv instance. Default is your workstation public IP"
+  type        = list(any)
+  default     = null
 }
 
 variable "compute_service_url" {
@@ -94,8 +95,8 @@ variable "machine_type" {
   type        = string
   description = "Instance type for the ASAv instance"
   default     = "n2-standard-4"
-  # change to "n2-custom-2-5632" or choose other type if too a large after the deployment
 }
+
 variable "source_image" {
   description = "Source disk image. Defaults to the latest GCP public image for cisco asav."
   default     = "cisco-asav-9-16-1-28"

@@ -1,3 +1,7 @@
+/******************************************
+	locals
+ *****************************************/
+
 locals {
   # Interface IPs by default are the third IP address on the subnetwork CIDR
   # The first 2 IPs addresses are reserved and used by GCP
@@ -5,9 +9,23 @@ locals {
   inside_interface_ip_address  = cidrhost(var.inside_subnetwork_cidr, 3)
   outside_interface_ip_address = cidrhost(var.outside_subnetwork_cidr, 3)
 
+  public_ip_whitelist_mgmt_access = var.public_ip_whitelist_mgmt_access == null ? ["${data.http.workstation_public_ip.body}/32"] : var.public_ip_whitelist_mgmt_access
+
   # If password is not set, use the generated password by the module secrets
   admin_password  = var.admin_password == null ? module.admin_password.secret_data : var.admin_password
   enable_password = var.enable_password == null ? module.enable_password.secret_data : var.enable_password
+}
+
+/******************************************
+  Workstation Public IP
+ *****************************************/
+
+# This is only to easily fetch the public IP of your
+# local workstation to configure the VPC firewall rule
+# for management access.
+#
+data "http" "workstation_public_ip" {
+  url = "https://api.ipify.org"
 }
 
 /******************************************
@@ -49,9 +67,10 @@ data "template_file" "initial_config" {
   }
 }
 
-/**********************************************/
-/***** BEGIN ASAv instance (VM)          ******/
-/**********************************************/
+/******************************************
+	BEGIN ASAv instance (VM)
+ *****************************************/
+
 // Resources below are reproduced from deployment manager by launching an ASAv instance
 // using the Cisco ASA virtual firewall (ASAv) offering on the GCP Marketplace.
 // https://console.cloud.google.com/marketplace/product/cisco-public/cisco-asav-byol
@@ -81,12 +100,12 @@ resource "google_compute_instance" "asav_vm" {
   #       Use SSH, ASDM, or ciscoasa terraform provider to manage the cisco ASAv, and update the initial script.
   lifecycle {
     ignore_changes = [
-      #metadata_startup_script,
+      metadata_startup_script,
     ]
   }
 
-  #labels = var.labels
-  tags = [var.name]
+  labels = var.labels
+  tags   = [var.name]
 
   boot_disk {
     initialize_params {
@@ -150,10 +169,9 @@ resource "google_compute_instance" "asav_vm" {
   timeouts {}
 }
 
-
-/*********************************/
-/***** BEGIN FIREWALL RULES ******/
-/*********************************/
+/*********************************
+  BEGIN FIREWALL RULES
+*********************************/
 
 # Applied to Management VPC Network
 resource "google_compute_firewall" "asav_deployment_tcp_https" {
@@ -163,7 +181,7 @@ resource "google_compute_firewall" "asav_deployment_tcp_https" {
   description   = "Rules to allow SSH and HTTPS connections while deploying or managing the ASAv instance"
   direction     = "INGRESS"
   priority      = 1000
-  source_ranges = var.public_ip_whitelist_mgmt_access
+  source_ranges = local.public_ip_whitelist_mgmt_access
   target_tags   = [var.name]
   allow {
     protocol = "tcp"

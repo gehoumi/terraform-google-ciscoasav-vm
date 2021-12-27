@@ -1,5 +1,5 @@
 [![published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/gehoumi/terraform-google-ciscoasav-vm)
-# terraform-google-ciscoasav-vm
+# Terraform-google-ciscoasav-vm
 Terraform module to deploy Cisco ASAv on GCP
 
 The ASAv requires a minimum of 3 interfaces. This module will deploy a Cisco ASAv in GCP with 3 interfaces.
@@ -8,7 +8,10 @@ This module will:
 
 - Create two external IP addresses for ASAv management and for the public outside network
 - Create two firewall rules to allow SSH and HTTPS access to the ASA management, and to allow HTTPS from anywhere to ASAv outside interface.
+- Fetch your workstation public IP and add it to the IP whitelist for VPC firewall rule for the ASA management access after the deployment.
 - Create a GCE managed instance to host the ASAv, with a startup script that provides the day0 configuration for the ASAv. The day0 configuration is applied during the firstboot of the ASAv.
+
+
 
 ## Requirements
 
@@ -38,25 +41,17 @@ module "ciscoasav" {
   project_id     = var.project_id
   project_number = var.project_number
 
-  mgmt_network    = local.vpc.management.network_name
-  inside_network  = local.vpc.inside.network_name
-  outside_network = local.vpc.outside.network_name
+  mgmt_network         = local.vpc.management.network_name
+  mgmt_subnetwork      = local.vpc.management.subnetwork_name
+  mgmt_subnetwork_cidr = local.vpc.management.subnetwork_ip_cidr_range
 
-  mgmt_subnetwork    = local.vpc.management.subnetwork_name
-  inside_subnetwork  = local.vpc.inside.subnetwork_name
-  outside_subnetwork = local.vpc.outside.subnetwork_name
+  inside_network         = local.vpc.inside.network_name
+  inside_subnetwork      = local.vpc.inside.subnetwork_name
+  inside_subnetwork_cidr = local.vpc.inside.subnetwork_ip_cidr_range
 
-  mgmt_subnetwork_cidr    = local.vpc.management.subnetwork_ip_cidr_range
-  inside_subnetwork_cidr  = local.vpc.inside.subnetwork_ip_cidr_range
+  outside_network         = local.vpc.outside.network_name
+  outside_subnetwork      = local.vpc.outside.subnetwork_name
   outside_subnetwork_cidr = local.vpc.outside.subnetwork_ip_cidr_range
-
-  public_ip_whitelist_mgmt_access = var.public_ip_whitelist_mgmt_access
-
-  depends_on = [
-    module.vpc_management,
-    module.vpc_inside,
-    module.vpc_outside,
-  ]
 
 }
 ```
