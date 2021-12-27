@@ -13,6 +13,7 @@ output "asa_external_outside_ip" {
   value       = google_compute_address.public_default[1].address
 }
 
-output "your_workstation_public_ip" {
-  value = data.http.workstation_public_ip.body
+output "workstation_public_ip" {
+  description = "Public IP of the workstation where to run the module"
+  value       = data.http.workstation_public_ip.body
 }

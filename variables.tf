@@ -14,8 +14,30 @@ variable "project_number" {
   type        = string
 }
 
+variable "region" {
+  description = "The region to construct the ASAv resources in"
+  type        = string
+  default     = "us-central1"
+}
+
+variable "zone" {
+  description = "The zone to construct the ASAv resources in"
+  type        = string
+  default     = "us-central1-a"
+}
+
 variable "mgmt_network" {
   description = "The name of the VPC network to attach the ASAv mgmt interface"
+  type        = string
+}
+
+variable "mgmt_subnetwork" {
+  description = "The subnetwork name of the mgmt subnetwork"
+  type        = string
+}
+
+variable "mgmt_subnetwork_cidr" {
+  description = "The subnetwork cidr of the mgmt subnetwork"
   type        = string
 }
 
@@ -24,19 +46,18 @@ variable "inside_network" {
   type        = string
 }
 
-variable "outside_network" {
-  description = "The name of the VPC network to attach the ASAv Outside interface"
-  type        = string
-}
-
-
-variable "mgmt_subnetwork" {
-  description = "The subnetwork name of the mgmt subnetwork"
+variable "inside_subnetwork_cidr" {
+  description = "The subnetwork cidr of the inside subnetwork"
   type        = string
 }
 
 variable "inside_subnetwork" {
   description = "The subnetwork name of the inside subnetwork"
+  type        = string
+}
+
+variable "outside_network" {
+  description = "The name of the VPC network to attach the ASAv Outside interface"
   type        = string
 }
 
@@ -48,29 +69,6 @@ variable "outside_subnetwork" {
 variable "outside_subnetwork_cidr" {
   description = "The subnetwork cidr of the outside subnetwork"
   type        = string
-}
-
-variable "inside_subnetwork_cidr" {
-  description = "The subnetwork cidr of the inside subnetwork"
-  type        = string
-}
-
-variable "mgmt_subnetwork_cidr" {
-  description = "The subnetwork cidr of the mgmt subnetwork"
-  type        = string
-}
-
-
-variable "region" {
-  description = "The region to construct the ASAv resources in"
-  type        = string
-  default     = "us-central1"
-}
-
-variable "zone" {
-  description = "The zone to construct the ASAv resources in"
-  type        = string
-  default     = "us-central1-a"
 }
 
 variable "addresses_names" {

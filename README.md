@@ -57,8 +57,47 @@ module "ciscoasav" {
 
 }
 ```
+## Inputs
 
-### Enable APIs
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| name | The hostname to assign to the Cisco ASAv | `string` | `"true"` | no |
+| project\_id | The ID of the Project to which the resources belong | `string` | `"false"` | yes |
+| project\_number | The Project number to which the resources belong | `string` | `"false"` | yes |
+| region | The region to construct the ASAv resources in | `string` | `"us-central1"` | no |
+| zone | The zone to construct the ASAv resources in | `string` | `"us-central1-a"` | no |
+| mgmt\_network | The name of the VPC network to attach the ASAv mgmt interface | `string` | `""` | yes |
+| mgmt\_subnetwork | The subnetwork name of the mgmt subnetwork | `string` | `""` | yes |
+| mgmt\_subnetwork\_cidr | The subnetwork cidr of the mgmt subnetwork | `string` | `""` | yes |
+| inside\_network | The name of the VPC network to attach the ASAv inside interface | `string` | `""` | yes |
+| inside\_subnetwork | The subnetwork name of the inside subnetwork | `string` | `""` | yes |
+| inside\_subnetwork\_cidr | The subnetwork cidr of the inside subnetwork | `string` | `""` | yes |
+| outside\_network | The name of the VPC network to attach the ASAv outside interface | `string` | `""` | yes |
+| outside\_subnetwork | The subnetwork name of the outside subnetwork | `string` | `""` | yes |
+| outside\_subnetwork\_cidr | The subnetwork cidr of the outside subnetwork | `string` | `""` | yes |
+| addresses\_names | List of Global IP (Public) addresses for external management and outside interfaces | `list(string))` | `["external-public-management-ip", "external-public-outside-ip"]` | no |
+| public\_ip\_whitelist\_mgmt\_access | List of Public IP address to that need to manage ASAv instance. Default is your workstation public IP | `list(string)` | `null` | no |
+| compute\_service\_url | The compute service URL | `string` | `"https://www.googleapis.com/compute/v1"` | no |
+| labels | Key-value map of labels to assign to the ASAv instance | `map(string)` | `{}` | no |
+| machine\_type | Instance type for the ASAv instance | `string` | `"n2-standard-4"` | no |
+| source\_image | Source disk image. Defaults to the latest GCP public image for cisco asav. | `string` | `"cisco-asav-9-16-1-28"` | no |
+| disk\_size\_gb | Boot disk size in GB | `string` | `"10"` | no |
+| disk\_type | Boot disk type, can be either pd-ssd, local-ssd, or pd-standard | `string` | `"pd-standard"` | no |
+| disk\_labels | Labels to be assigned to boot disk, provided as a map | `map(string)` | `{}` | no |  
+| admin\_username | ASAv administrator username. Default is admin | `string` | `null` | no |
+| admin\_password | ASAv administrator password | `string` | `null` | no |
+| admin\_password | The ASAv enable password | `string` | `null` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| hostname | Host name of the ASAv |
+| asa\_external\_mgmt\_ip | address value create for external mgmt access |
+| asa_external_outside_ip | address value create for external outside |
+| workstation_public_ip | Public IP of the workstation where to run the module |
+
+## Enable APIs
 
 A project with the following APIs enabled must be used to host the
 resources of this module:
@@ -67,7 +106,7 @@ resources of this module:
 - Secret Manager API: `secretmanager.googleapis.com`
 
 
-### Permissions
+## Permissions
 
 This module use the default service account to create ASAv instance, and create an admin account for admin user or for any automation tools who need access the ASAv.
 
