@@ -33,12 +33,19 @@ The [Google Terraform Network Module](https://registry.terraform.io/modules/terr
 
 Until you license the ASAv, it will run in degraded mode, which allows only 100 connections and throughput of 100 Kbps. [See Smart Software Licensing for the ASAv](https://www.cisco.com/c/en/us/td/docs/security/asa/asa96/configuration/general/asa-96-general-config/intro-license-smart.html).
 
-## Use Case Examples
+## SSH Authentication: Use Case Examples
 
 Functional example is included in the [examples](https://github.com/gehoumi/terraform-google-ciscoasav-vm/tree/main/examples) directory, check it for further information.
 
-*Warning* The secret data will be stored in the raw state as plain-text and the secret can be displayed in console output. I recommend using an encrypted password as explain in [basic_example_2](https://github.com/gehoumi/terraform-google-ciscoasav-vm/tree/main/examples/basic_example_2)
+**Warning** If you use username and password for the deployment, the secret data will be stored in the raw state as plain-text and the secret can be displayed in console output. I recommend using an encrypted password as explain in [basic_example_2](https://github.com/gehoumi/terraform-google-ciscoasav-vm/tree/main/examples/basic_example_2)
 
+Alternatively, you can add **public key authentication** by updating your [Day0 configuration](https://github.com/gehoumi/terraform-google-ciscoasav-vm/blob/072aa00f780c5775e1ae745e5ed70aa0752dc8df/template/initial_config.tpl#L60) before deployment. Or you can use SSH or ASDM after deployment to correct the configuration.
+
+The following is a sample configuration for a username "admin":
+```bash
+username admin attributes
+  ssh authentication publickey 80:3a:fc:d9:08:a9:1f:34:76:31:ed:ab:bd:3a:9e:03:14:1e:1b hashed
+```
 ## Usage
 
 Basic usage of this module is as follows:
