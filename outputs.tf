@@ -3,6 +3,12 @@ output "hostname" {
   value       = var.name
 }
 
+output "admin_password" {
+  description = "ASAv administrator password"
+  value       = module.admin_password.secret_data
+  sensitive   = true
+}
+
 output "asa_external_mgmt_ip" {
   description = "address value create for external mgmt access"
   value       = google_compute_address.public_default[0].address

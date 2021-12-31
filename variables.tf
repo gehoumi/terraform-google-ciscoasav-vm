@@ -144,3 +144,31 @@ variable "enable_password" {
   sensitive   = true
   default     = null
 }
+
+variable "ssh_key" {
+  description = <<EOT
+  The SSH public key to use to login to the instance. The maximum keysize is 2048 bits
+   because ASA CLI will not allow more than 512 chars input on a single line.
+   Enter only the part without spaces e.g AAAAB3NzaC1yc2EAAAAD....
+EOT
+  type        = string
+  default     = ""
+}
+
+variable "smart_account_registration_token" {
+  description = "The Smart Account registration token ID to activate the license"
+  type        = string
+  default     = ""
+}
+
+variable "throughput_level" {
+  description = "The throughput level based on the instance size, the maximum supported vCPUs is 16"
+  type        = map(string)
+
+  default = {
+    "n2-standard-4"  = "1G"
+    "n2-standard-8"  = "2G"
+    "n2-standard-16" = "10G"
+  }
+
+}

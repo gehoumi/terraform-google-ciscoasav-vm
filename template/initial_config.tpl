@@ -56,11 +56,23 @@ ssh version 2
 ssh 0 0 management
 console timeout 0
 !
-username ${admin_username} password ${admin_password} privilege 15
-username ${admin_username} attributes
- service-type admin
-!
-!
 no call-home reporting anonymous
+!
+username ${admin_username} password ${admin_password} privilege 15
+%{ if ssh_key != "" }
+username ${admin_username} attributes
+  ssh authentication publickey ${ssh_key}
+  service-type admin
+%{ endif }
+!
+!
+license smart
+    feature tier standard
+    throughput level ${throughput_level}
+
+%{ if smart_account_registration_token != "" }
+license smart register idtoken ${smart_account_registration_token}
+%{ endif }
+!
 !
 !END

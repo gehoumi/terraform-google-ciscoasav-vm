@@ -31,6 +31,13 @@ data "http" "workstation_public_ip" {
 /******************************************
 	Secrets to create if password is not set
  *****************************************/
+module "enable_password" {
+  source        = "./modules/secrets"
+  create_secret = var.enable_password == null
+
+  project_id = var.project_id
+  secret_id  = "asav-enable-password"
+}
 
 module "admin_password" {
   source        = "./modules/secrets"
@@ -38,14 +45,6 @@ module "admin_password" {
 
   project_id = var.project_id
   secret_id  = "asav-admin-password"
-}
-
-module "enable_password" {
-  source        = "./modules/secrets"
-  create_secret = var.enable_password == null
-
-  project_id = var.project_id
-  secret_id  = "asav-enable-password"
 }
 
 /******************************************
@@ -61,9 +60,12 @@ data "template_file" "initial_config" {
     inside_subnetwork_cidr       = var.inside_subnetwork_cidr
     outside_subnetwork_cidr      = var.outside_subnetwork_cidr
 
-    admin_username  = var.admin_username
-    admin_password  = local.admin_password
-    enable_password = local.enable_password
+    admin_username                   = var.admin_username
+    admin_password                   = local.admin_password
+    enable_password                  = local.enable_password
+    ssh_key                          = var.ssh_key
+    smart_account_registration_token = var.smart_account_registration_token
+    throughput_level                 = lookup(var.throughput_level, var.machine_type, "1G")
   }
 }
 

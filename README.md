@@ -41,14 +41,26 @@ Functional examples are included in the [examples](https://github.com/gehoumi/te
 
 **Warning** If you use username and password for the deployment, the secret data will be stored in the raw state as plain-text and the secret can be displayed in console output. I recommend using an encrypted password as explain in [basic_example_2](https://github.com/gehoumi/terraform-google-ciscoasav-vm/tree/main/examples/basic_example_2)
 
-Alternatively, you can add **public key authentication** by updating your [Day0 configuration](https://github.com/gehoumi/terraform-google-ciscoasav-vm/blob/072aa00f780c5775e1ae745e5ed70aa0752dc8df/template/initial_config.tpl#L60) before deployment. Or you can use SSH or ASDM after deployment to correct the configuration.
+**Limitation** ASA CLI will not allow more than 512 chars input on a single line, therefore If the public key is longer than 2048 bits, you can not use the variable `ssh_key` to enter the public key in day0 configuration because it is too long. If you do so, the module will create the ASA, with `admin_password` but `ssh_key authentication` won't work and you will see this error in the ASAv [serial console](https://cloud.google.com/compute/docs/troubleshooting/troubleshooting-using-serial-console) :
+```
+Input line size exceeded available buffer (511 characters). First 511 chars of the line:
+  ssh authentication publickey
+```
+
+Alternatively:
+- you can add your **public key** after the deployment in CLI, because the IOS got around the single line by using multi-line input for the key.
 
 The following is a sample configuration for a username "admin":
 ```bash
 username admin attributes
-  ssh authentication publickey 80:3a:fc:d9:08:a9:1f:34:76:31:ed:ab:bd:3a:9e:03:14:1e:1b hashed
+  ssh authentication publickey <PUBLIC_KEY>
 ```
+- you can also edit the day0 configuration to add your publickey hashed and append the `hashed` tag
 
+```bash
+username admin attributes
+  ssh authentication publickey <PUBLIC_KEY_HASHED> hashed
+```
 
 ## Usage
 
@@ -153,13 +165,17 @@ The external SSH access to ASA management Public IP is protected by firewall rul
 | <a name="input_project_number"></a> [project\_number](#input\_project\_number) | The Project number to which the resources belong | `string` | n/a | yes |
 | <a name="input_public_ip_whitelist_mgmt_access"></a> [public\_ip\_whitelist\_mgmt\_access](#input\_public\_ip\_whitelist\_mgmt\_access) | List of Public IP address to that need to manage ASAv instance. Default is your workstation public IP | `list(string)` | `null` | no |
 | <a name="input_region"></a> [region](#input\_region) | The region to construct the ASAv resources in | `string` | `"us-central1"` | no |
+| <a name="input_smart_account_registration_token"></a> [smart\_account\_registration\_token](#input\_smart\_account\_registration\_token) | The Smart Account registration token ID to activate the license | `string` | `""` | no |
 | <a name="input_source_image"></a> [source\_image](#input\_source\_image) | Source disk image. Defaults to the latest GCP public image for cisco asav. | `string` | `"cisco-asav-9-16-1-28"` | no |
+| <a name="input_ssh_key"></a> [ssh\_key](#input\_ssh\_key) | The SSH public key to use to login to the instance. The maximum keysize is 2048 bits<br>   because ASA CLI will not allow more than 512 chars input on a single line.<br>   Enter only the part without spaces e.g AAAAB3NzaC1yc2EAAAAD.... | `string` | `""` | no |
+| <a name="input_throughput_level"></a> [throughput\_level](#input\_throughput\_level) | The throughput level based on the instance size, the maximum supported vCPUs is 16 | `map(string)` | <pre>{<br>  "n2-standard-16": "10G",<br>  "n2-standard-4": "1G",<br>  "n2-standard-8": "2G"<br>}</pre> | no |
 | <a name="input_zone"></a> [zone](#input\_zone) | The zone to construct the ASAv resources in | `string` | `"us-central1-a"` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
+| <a name="output_admin_password"></a> [admin\_password](#output\_admin\_password) | ASAv administrator password |
 | <a name="output_asa_external_mgmt_ip"></a> [asa\_external\_mgmt\_ip](#output\_asa\_external\_mgmt\_ip) | address value create for external mgmt access |
 | <a name="output_asa_external_outside_ip"></a> [asa\_external\_outside\_ip](#output\_asa\_external\_outside\_ip) | address value create for external outside |
 | <a name="output_hostname"></a> [hostname](#output\_hostname) | Host name of the ASAv |
