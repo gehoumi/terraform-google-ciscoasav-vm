@@ -1,6 +1,7 @@
 hostname ${hostname}
-!
 enable password ${enable_password}
+!
+ip local pool VPN_POOL1 ${vpn_ip_pool_start}-${vpn_ip_pool_end} mask ${vpn_pool_netmask}
 !
 interface GigabitEthernet0/0
  description "Inside network peering"
@@ -34,7 +35,10 @@ dns server-group DefaultDNS
 same-security-traffic permit inter-interface
 same-security-traffic permit intra-interface
 !
-route outside 0.0.0.0 0.0.0.0 ${cidrhost(outside_subnetwork_cidr, 1)} 1
+access-list GCP_ACL_Split_Tunnel_List standard permit ${split("/", gcp_private_supernet_cidr)[0]} ${cidrnetmask(gcp_private_supernet_cidr)}
+!
+route outside 0.0.0.0 0.0.0.0 ${cidrhost(outside_subnetwork_cidr, 1)}
+route inside ${split("/", gcp_private_supernet_cidr)[0]} ${cidrnetmask(gcp_private_supernet_cidr)} ${cidrhost(inside_subnetwork_cidr, 1)}
 !
 ! Required for SSH and HTTP authentication for the API connections
 aaa authentication ssh console LOCAL
@@ -65,6 +69,12 @@ username ${admin_username} attributes
   service-type admin
 %{ endif }
 !
+group-policy DfltGrpPolicy attributes
+ dns-server value 8.8.8.8
+ vpn-tunnel-protocol ikev2 ssl-client
+ split-tunnel-policy tunnelspecified
+ split-tunnel-network-list value GCP_ACL_Split_Tunnel_List
+ address-pools value VPN_POOL1
 !
 license smart
     feature tier standard
@@ -72,7 +82,15 @@ license smart
 
 %{ if smart_account_registration_token != "" }
 license smart register idtoken ${smart_account_registration_token}
+call-home
+ source-interface outside
 %{ endif }
+!
+!
+webvpn
+ enable outside
+ anyconnect enable
+ tunnel-group-list enable
 !
 !
 !END

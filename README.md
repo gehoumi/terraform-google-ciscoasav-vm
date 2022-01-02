@@ -1,8 +1,8 @@
 [![published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/gehoumi/terraform-google-ciscoasav-vm) [![Github tag](https://img.shields.io/github/tag/gehoumi/terraform-google-ciscoasav-vm.svg)](https://github.com/gehoumi/terraform-google-ciscoasav-vm/releases)
 # Automated Cisco ASAv deployment on GCP with Terraform
-[Terraform module](https://registry.terraform.io/modules/gehoumi/ciscoasav-vm/google/latest) to deploy Cisco Adaptive Security Virtual Appliance (ASAv) on Google Cloud Platform (GCP).
+[Terraform module](https://registry.terraform.io/modules/gehoumi/ciscoasav-vm/google/latest) to deploy Cisco Adaptive Security Virtual Appliance (ASAv) on Google Cloud Platform (GCP) for remote access IPSec/SSL VPN clients.
 
-The [ASAv](https://www.cisco.com/c/en/us/td/docs/security/asa/asa916/asav/getting-started/asav-916-gsg/asav_gcp.html) runs the same software as physical Cisco ASAs and can be deployed in the public [GCP cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects). It can then be configured as a VPN concentrator for remote access IPSec/SSL VPN's to protect cloud workloads, or can be used for IPSec site-to-site, etc.
+The [ASAv](https://www.cisco.com/c/en/us/td/docs/security/asa/asa916/asav/getting-started/asav-916-gsg/asav_gcp.html) runs the same software as physical Cisco ASAs and can be deployed in the public [GCP cloud Project](https://cloud.google.com/resource-manager/docs/creating-managing-projects). It can then be configured as a VPN concentrator to connect to the private cloud workloads, or can be used for IPSec site-to-site, etc.
 
 The ASAv in this module requires a minimum of 3 interfaces. The module will deploy the ASAv in GCP with 3 interfaces and minimal configuration.
 
@@ -13,6 +13,7 @@ This module will:
 - Fetch the deployment workstation public IP and add it to the IP whitelist for VPC firewall rule for the ASA management access after the deployment.
 - Create a GCE managed instance to host the ASAv, with a startup script that provides the day0 configuration for the ASAv. The day0 configuration is applied during the first boot of the ASAv.
 - Create passwords with Secret Manager for `enable mode` and `admin` password to be used to deploy the Cisco ASAv instance if the passwords are not set.
+- Create a VPN pool in Split tunnel group for remote access VPN clients. You can then use a Cisco AnyConnect Secure Mobility Client to connect to your GCP private Cloud network.
 
 
 
@@ -88,6 +89,13 @@ module "ciscoasav" {
 
 }
 ```
+## Connect to VPN with Cisco AnyConnect Secure Mobility Client
+
+This section assumes that you have Cisco AnyConnect Secure Mobility Client downloaded and installed on your local Windows workstation.
+- Launch the Cisco AnyConnect Secure Mobility Client and add the value of the terraform `output` IP address `asa_external_outside_ip`
+- CISCO AnyConnect window will pop up stating that the ``"Untrusted VPN Server Blocked!"`` this is normal in the because the SSL certificate is untrusted. Simply select Connect Anyway
+- Change the Setting by unchecking the box labeled `Block connections to untrusted servers`
+- Reconnect to the VPN via CISCO AnyConnect with the user admin/password
 
 ## Enable APIs
 

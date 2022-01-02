@@ -54,12 +54,15 @@ module "admin_password" {
 data "template_file" "initial_config" {
   template = file("${path.module}/template/initial_config.tpl")
   vars = {
-    hostname                     = var.name
-    inside_interface_ip_address  = local.inside_interface_ip_address
-    outside_interface_ip_address = local.outside_interface_ip_address
-    inside_subnetwork_cidr       = var.inside_subnetwork_cidr
-    outside_subnetwork_cidr      = var.outside_subnetwork_cidr
-
+    hostname                         = var.name
+    inside_interface_ip_address      = local.inside_interface_ip_address
+    outside_interface_ip_address     = local.outside_interface_ip_address
+    inside_subnetwork_cidr           = var.inside_subnetwork_cidr
+    outside_subnetwork_cidr          = var.outside_subnetwork_cidr
+    vpn_ip_pool_start                = cidrhost(var.vpn_pool_cidr, var.vpn_pool_reserve_start_ip)
+    vpn_ip_pool_end                  = cidrhost(var.vpn_pool_cidr, var.vpn_pool_reserve_end_ip)
+    vpn_pool_netmask                 = cidrnetmask(var.vpn_pool_cidr)
+    gcp_private_supernet_cidr        = var.gcp_private_supernet_cidr
     admin_username                   = var.admin_username
     admin_password                   = local.admin_password
     enable_password                  = local.enable_password
@@ -102,7 +105,7 @@ resource "google_compute_instance" "asav_vm" {
   #       Use SSH, ASDM, or ciscoasa terraform provider to manage the cisco ASAv, and update the initial script.
   lifecycle {
     ignore_changes = [
-      metadata_startup_script,
+      #metadata_startup_script,
     ]
   }
 

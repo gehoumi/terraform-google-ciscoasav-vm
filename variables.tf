@@ -86,6 +86,30 @@ variable "public_ip_whitelist_mgmt_access" {
   default     = null
 }
 
+variable "gcp_private_supernet_cidr" {
+  description = "The GCP private internal networks that should be accessible by the remote anyconnect VPN clients."
+  type        = string
+  default     = "10.0.0.0/8"
+}
+
+variable "vpn_pool_cidr" {
+  description = "The VPN Pool CIDR network to assign the remote anyconnect VPN clients"
+  type        = string
+  default     = "10.100.0.0/24"
+}
+
+variable "vpn_pool_reserve_start_ip" {
+  description = "The number of IPs to be reserved from the start of VPN pool. Default is to reserve the 10 first IPs"
+  type        = number
+  default     = 10
+}
+
+variable "vpn_pool_reserve_end_ip" {
+  description = "The number of IPs to be reserved from the end of VPN pool. Default is not to reserve anything from the end"
+  type        = number
+  default     = -2
+}
+
 variable "compute_service_url" {
   type        = string
   description = "The compute service URL"
