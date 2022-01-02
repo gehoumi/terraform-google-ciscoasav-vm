@@ -87,7 +87,7 @@ variable "public_ip_whitelist_mgmt_access" {
 }
 
 variable "gcp_private_supernet_cidr" {
-  description = "The GCP private internal networks that should be accessible by the remote anyconnect VPN clients."
+  description = "The GCP private internal supernet that should be accessible by the remote anyconnect VPN clients"
   type        = string
   default     = "10.0.0.0/8"
 }

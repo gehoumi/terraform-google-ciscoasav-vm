@@ -30,9 +30,9 @@ Make sure three VPCs are available or created prior to deploy the ASAv. The VPCs
 
 The [Google Terraform Network Module](https://registry.terraform.io/modules/terraform-google-modules/network/google/latest) can be used to provision a project with the necessary VPC Networks and Subnets.
 
-### License the ASAv.
+### License the ASAv:
 
-Until you license the ASAv, it will run in degraded mode, which allows only 100 connections and throughput of 100 Kbps. [See Smart Software Licensing for the ASAv](https://www.cisco.com/c/en/us/td/docs/security/asa/asa96/configuration/general/asa-96-general-config/intro-license-smart.html).
+Until you license the ASAv, it will run in degraded mode, which allows only 100 connections and throughput of 100 Kbps. You can activate the license anytime [See Smart Software Licensing for the ASAv](https://www.cisco.com/c/en/us/td/docs/security/asa/asa96/configuration/general/asa-96-general-config/intro-license-smart.html).
 
 
 
@@ -157,7 +157,7 @@ The external SSH access to ASA management Public IP is protected by firewall rul
 | <a name="input_disk_size_gb"></a> [disk\_size\_gb](#input\_disk\_size\_gb) | Boot disk size in GB | `string` | `"10"` | no |
 | <a name="input_disk_type"></a> [disk\_type](#input\_disk\_type) | Boot disk type | `string` | `"pd-standard"` | no |
 | <a name="input_enable_password"></a> [enable\_password](#input\_enable\_password) | The ASAv enable password | `string` | `null` | no |
-| <a name="input_gcp_private_supernet_cidr"></a> [gcp\_private\_supernet\_cidr](#input\_gcp\_private\_supernet\_cidr) | The GCP private internal networks that should be accessible by the remote anyconnect VPN clients. | `string` | `"10.0.0.0/8"` | no |
+| <a name="input_gcp_private_supernet_cidr"></a> [gcp\_private\_supernet\_cidr](#input\_gcp\_private\_supernet\_cidr) | The GCP private internal supernet that should be accessible by the remote anyconnect VPN clients | `string` | `"10.0.0.0/8"` | no |
 | <a name="input_inside_network"></a> [inside\_network](#input\_inside\_network) | The name of the VPC network to attach the ASAv inside interface | `string` | n/a | yes |
 | <a name="input_inside_subnetwork"></a> [inside\_subnetwork](#input\_inside\_subnetwork) | The subnetwork name of the inside subnetwork | `string` | n/a | yes |
 | <a name="input_inside_subnetwork_cidr"></a> [inside\_subnetwork\_cidr](#input\_inside\_subnetwork\_cidr) | The subnetwork cidr of the inside subnetwork | `string` | n/a | yes |
