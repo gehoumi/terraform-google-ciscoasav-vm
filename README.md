@@ -157,6 +157,7 @@ The external SSH access to ASA management Public IP is protected by firewall rul
 | <a name="input_disk_size_gb"></a> [disk\_size\_gb](#input\_disk\_size\_gb) | Boot disk size in GB | `string` | `"10"` | no |
 | <a name="input_disk_type"></a> [disk\_type](#input\_disk\_type) | Boot disk type | `string` | `"pd-standard"` | no |
 | <a name="input_enable_password"></a> [enable\_password](#input\_enable\_password) | The ASAv enable password | `string` | `null` | no |
+| <a name="input_gcp_private_supernet_cidr"></a> [gcp\_private\_supernet\_cidr](#input\_gcp\_private\_supernet\_cidr) | The GCP private internal networks that should be accessible by the remote anyconnect VPN clients. | `string` | `"10.0.0.0/8"` | no |
 | <a name="input_inside_network"></a> [inside\_network](#input\_inside\_network) | The name of the VPC network to attach the ASAv inside interface | `string` | n/a | yes |
 | <a name="input_inside_subnetwork"></a> [inside\_subnetwork](#input\_inside\_subnetwork) | The subnetwork name of the inside subnetwork | `string` | n/a | yes |
 | <a name="input_inside_subnetwork_cidr"></a> [inside\_subnetwork\_cidr](#input\_inside\_subnetwork\_cidr) | The subnetwork cidr of the inside subnetwork | `string` | n/a | yes |
@@ -177,6 +178,9 @@ The external SSH access to ASA management Public IP is protected by firewall rul
 | <a name="input_source_image"></a> [source\_image](#input\_source\_image) | Source disk image. Defaults to the latest GCP public image for cisco asav. | `string` | `"cisco-asav-9-16-1-28"` | no |
 | <a name="input_ssh_key"></a> [ssh\_key](#input\_ssh\_key) | The SSH public key to use to login to the instance. The maximum keysize is 2048 bits<br>   because ASA CLI will not allow more than 512 chars input on a single line.<br>   Enter only the part without spaces e.g AAAAB3NzaC1yc2EAAAAD.... | `string` | `""` | no |
 | <a name="input_throughput_level"></a> [throughput\_level](#input\_throughput\_level) | The throughput level based on the instance size, the maximum supported vCPUs is 16 | `map(string)` | <pre>{<br>  "n2-standard-16": "10G",<br>  "n2-standard-4": "1G",<br>  "n2-standard-8": "2G"<br>}</pre> | no |
+| <a name="input_vpn_pool_cidr"></a> [vpn\_pool\_cidr](#input\_vpn\_pool\_cidr) | The VPN Pool CIDR network to assign the remote anyconnect VPN clients | `string` | `"10.100.0.0/24"` | no |
+| <a name="input_vpn_pool_reserve_end_ip"></a> [vpn\_pool\_reserve\_end\_ip](#input\_vpn\_pool\_reserve\_end\_ip) | The number of IPs to be reserved from the end of VPN pool. Default is not to reserve anything from the end | `number` | `-2` | no |
+| <a name="input_vpn_pool_reserve_start_ip"></a> [vpn\_pool\_reserve\_start\_ip](#input\_vpn\_pool\_reserve\_start\_ip) | The number of IPs to be reserved from the start of VPN pool. Default is to reserve the 10 first IPs | `number` | `10` | no |
 | <a name="input_zone"></a> [zone](#input\_zone) | The zone to construct the ASAv resources in | `string` | `"us-central1-a"` | no |
 
 ## Outputs
