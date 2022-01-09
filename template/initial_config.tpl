@@ -4,16 +4,16 @@ enable password ${enable_password}
 ip local pool VPN_POOL1 ${vpn_ip_pool_start}-${vpn_ip_pool_end} mask ${vpn_pool_netmask}
 !
 interface GigabitEthernet0/0
- description "Inside network peering"
+ description "Inside network to GCP"
  nameif inside
  security-level 20
- ip address ${inside_interface_ip_address} ${cidrnetmask(inside_subnetwork_cidr)}
+ ip address dhcp
 !
 interface GigabitEthernet0/1
- description "Outside network"
+ description "Outside network to Internet"
  nameif outside
  security-level 0
- ip address ${outside_interface_ip_address} ${cidrnetmask(outside_subnetwork_cidr)}
+ ip address dhcp
 !
 interface Management0/0
  management-only
@@ -55,6 +55,7 @@ http 0 0 management
 crypto key generate rsa modulus 2048
 !
 !
+ssh scopy enable
 ssh timeout 60
 ssh version 2
 ssh 0 0 management
@@ -82,8 +83,6 @@ license smart
 
 %{ if smart_account_registration_token != "" }
 license smart register idtoken ${smart_account_registration_token}
-call-home
- source-interface outside
 %{ endif }
 !
 !
