@@ -1,3 +1,5 @@
+! The following is a sample ASA configuration file for reference only.
+
 hostname ${hostname}
 enable password ${enable_password}
 !
