@@ -22,11 +22,11 @@ terraform apply
 
 ## CLI Usage
 
-Once the secret is created, you can search for the newly created secret with something
+Once the terraform apply is completed, you can search for the newly created secret in the console or use the commands in `terraform output` to retrieve the ASA admin password. Something
 similar to the following:
 
 ```
-$ gcloud secrets versions access "latest" --secret="asav-admin-password" --project="<project-id>"
+$ gcloud secrets versions access latest --secret=<asa_hostname>-admin-password --project=<project-id>
 
 ```
 

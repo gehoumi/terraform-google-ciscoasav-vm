@@ -36,9 +36,9 @@ Until you license the ASAv, it will run in degraded mode, which allows only 100 
 
 
 
-## SSH Authentication and Use Case Examples
+## Use Case Examples
 
-Functional examples are included in the [examples](https://github.com/gehoumi/terraform-google-ciscoasav-vm/tree/main/examples) directory, check it for further information.
+Functional examples are included in the [examples](https://github.com/gehoumi/terraform-google-ciscoasav-vm/tree/main/examples) directory, check it for further information.  
 
 **Warning** If you use username and password for the deployment, the secret data will be stored in the raw state as plain-text and the secret can be displayed in console output. I recommend using an encrypted password as explain in [basic_example_2](https://github.com/gehoumi/terraform-google-ciscoasav-vm/tree/main/examples/basic_example_2)
 
@@ -65,12 +65,12 @@ username admin attributes
 
 ## Usage
 
-Basic usage of this module is as follows:
+Basic usage of this module is as follows :
 
 ```hcl
 module "ciscoasav" {
-  source = "gehoumi/ciscoasav-vm/google"
-
+  source         = "gehoumi/ciscoasav-vm/google"
+  version        = "1.0.7"
   name           = "cisco-asav-1"
   project_id     = var.project_id
   project_number = var.project_number
@@ -89,6 +89,15 @@ module "ciscoasav" {
 
 }
 ```
+## SSH access 
+As explain in [basic_example_1](https://github.com/gehoumi/terraform-google-ciscoasav-vm/tree/main/examples/basic_example_1), you can search for the newly created secret in the console or use the commands in `terraform output` to retrieve the ASA admin password. Something
+similar to the following:
+
+```
+$ gcloud secrets versions access latest --secret=<asa_hostname>-admin-password --project=<project-id>
+
+```
+
 ## Connect to VPN with Cisco AnyConnect Secure Mobility Client
 
 This section assumes that you have Cisco AnyConnect Secure Mobility Client downloaded and installed on your local Windows workstation.
