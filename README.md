@@ -11,9 +11,12 @@ This module will:
 - Create two external IP addresses for ASAv management and for the public outside network
 - Create two firewall rules to allow SSH and HTTPS access to the ASA management, and to allow HTTPS from anywhere to ASAv outside interface.
 - Fetch the deployment workstation public IP and add it to the IP whitelist for VPC firewall rule for the ASA management access after the deployment.
-- Create a GCE managed instance to host the ASAv, with a startup script that provides the day0 configuration for the ASAv. The day0 configuration is applied during the first boot of the ASAv.
+- Create a GCE managed instance to host the ASAv, with a startup script that provides the day0 configuration for the ASAv. The day0 configuration is applied during the first boot of the ASAv. 
+- Set DHCP IP assignment to all the interfaces in the ASA
+- Nic0 is used to SSH to ASA virtual as it only supports IP forwarding
 - Create passwords with Secret Manager for `enable mode` and `admin` password to be used to deploy the Cisco ASAv instance if the passwords are not set.
 - Create a VPN pool in Split tunnel group for remote access VPN clients. You can then use a Cisco AnyConnect Secure Mobility Client to connect to your GCP private Cloud network.
+- Enable SSH on the managment interface in ASA configuration
 
 
 
