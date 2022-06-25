@@ -131,13 +131,14 @@ variable "machine_type" {
 variable "source_image" {
   description = <<EOT
   Image of the ASAv which is to be used in the project.
-  GCP public URL image for cisco asav https://www.googleapis.com/compute/v1/projects/cisco-public/global/images/xxxx
+  GCP public URL image for cisco asav https://www.googleapis.com/compute/v1/projects/cisco-public/global/images/cisco-asav-9-xy-z
   The module has been tested with the following ASA version, other versions may or may not work correctly.
   Example: "cisco-asav-9-15-1-15"
            "cisco-asav-9-16-1-28"
            "cisco-asav-9-17-1"
+           "cisco-asav-9-18-1"
 EOT
-  default     = "cisco-asav-9-17-1"
+  default     = "cisco-asav-9-18-1"
 }
 
 variable "disk_size_gb" {
