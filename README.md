@@ -197,4 +197,5 @@ The external SSH access to ASA management Public IP is protected by firewall rul
 ## References
 
 - [Cisco ASAv Getting Started Guide](https://www.cisco.com/c/en/us/td/docs/security/asa/asa916/asav/getting-started/asav-916-gsg/asav_gcp.html)
+- [ASA Release notes](https://www.cisco.com/c/en/us/support/security/adaptive-security-appliance-asa-software/products-release-notes-list.html)
 - [terraform-google-modules/terraform-google-vm](https://github.com/terraform-google-modules/terraform-google-vm/tree/master/modules/instance_template)
