@@ -170,7 +170,7 @@ resource "google_compute_firewall" "asav_deployment_tcp_https" {
 # Applied to OUTSIDE VPC Network
 resource "google_compute_firewall" "vpc_outside_ingress_allow_https" {
   project     = var.project_id
-  name        = "${var.name}-any-outside-tcp-443"
+  name        = "${var.name}-any-outside-tcp-udp-443"
   network     = var.outside_network
   description = "Rules to allow HTTPS from anywhere"
   direction   = "INGRESS"
@@ -179,6 +179,11 @@ resource "google_compute_firewall" "vpc_outside_ingress_allow_https" {
     "0.0.0.0/0",
   ]
   target_tags = [var.name]
+  # UDP 443 is required by DTLS
+  allow {
+    protocol = "udp"
+    ports    = ["443"]
+  }
   allow {
     protocol = "tcp"
     ports    = ["443"]

@@ -138,7 +138,7 @@ variable "source_image" {
            "cisco-asav-9-17-1"
            "cisco-asav-9-18-1"
 EOT
-  default     = "cisco-asav-9-18-1"
+  default     = "cisco-asav-9-19-1"
 }
 
 variable "disk_size_gb" {
