@@ -44,9 +44,9 @@ module "admin_password" {
 	data template file
  *****************************************/
 
-data "template_file" "initial_config" {
-  template = file("${path.module}/template/initial_config.tpl")
-  vars = {
+locals {
+
+  initial_config = templatefile("${path.module}/template/initial_config.tpl", {
     hostname                         = var.name
     inside_subnetwork_cidr           = var.inside_subnetwork_cidr
     outside_subnetwork_cidr          = var.outside_subnetwork_cidr
@@ -60,8 +60,9 @@ data "template_file" "initial_config" {
     ssh_key                          = var.ssh_key
     smart_account_registration_token = var.smart_account_registration_token
     throughput_level                 = lookup(var.throughput_level, var.machine_type, "1G")
-  }
+  })
 }
+
 
 /******************************************
 	BEGIN ASAv instance (VM)
@@ -82,7 +83,7 @@ resource "google_compute_instance" "asav_vm" {
     # No ssh-keys here, ssh-key are supply directly by the initial_config template file
   }
 
-  metadata_startup_script = data.template_file.initial_config.rendered
+  metadata_startup_script = local.initial_config
   # NOTE: Using the initial startup script is not a great way to manage the ASA configuration, because
   #       Updating will result in termination of the host
   #       Just ignore changes on the file initial_config.tpl after the initial deployment
