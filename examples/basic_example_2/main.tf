@@ -72,12 +72,12 @@ module "ciscoasav" {
   outside_subnetwork      = local.vpc.outside.subnetwork_name
   outside_subnetwork_cidr = local.vpc.outside.subnetwork_ip_cidr_range
 
+  public_static_ips = {
+    mgmt    = "35.193.252.100"
+    outside = "34.132.118.247"
+  }
+
   admin_password  = var.admin_password
   enable_password = var.enable_password
 
-  depends_on = [
-    module.vpc_management,
-    module.vpc_inside,
-    module.vpc_outside,
-  ]
 }

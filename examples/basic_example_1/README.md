@@ -76,4 +76,6 @@ No resources.
 |------|-------------|
 | <a name="output_asa_external_mgmt_ip"></a> [asa\_external\_mgmt\_ip](#output\_asa\_external\_mgmt\_ip) | address value create for external mgmt access |
 | <a name="output_asa_external_outside_ip"></a> [asa\_external\_outside\_ip](#output\_asa\_external\_outside\_ip) | address value create for external outside |
+| <a name="output_gcloud_cmd_asa_admin_password"></a> [gcloud\_cmd\_asa\_admin\_password](#output\_gcloud\_cmd\_asa\_admin\_password) | n/a |
+| <a name="output_ssh_cmd_asa_access"></a> [ssh\_cmd\_asa\_access](#output\_ssh\_cmd\_asa\_access) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

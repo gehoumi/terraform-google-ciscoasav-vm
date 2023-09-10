@@ -110,9 +110,10 @@ resource "google_compute_instance" "asav_vm" {
     subnetwork = "${var.compute_service_url}/projects/${var.project_id}/regions/${var.region}/subnetworks/${var.mgmt_subnetwork}"
 
     access_config {
-      nat_ip       = google_compute_address.public_default[0].address
+      nat_ip       = try(var.public_static_ips.mgmt, google_compute_address.public_static_ip_mgmt[0].address, null)
       network_tier = "PREMIUM"
     }
+
   }
   # "nic1 vpc inside"
   network_interface {
@@ -125,7 +126,7 @@ resource "google_compute_instance" "asav_vm" {
     subnetwork = "${var.compute_service_url}/projects/${var.project_id}/regions/${var.region}/subnetworks/${var.outside_subnetwork}"
 
     access_config {
-      nat_ip       = google_compute_address.public_default[1].address
+      nat_ip       = try(var.public_static_ips.outside, google_compute_address.public_static_ip_outside[0].address, null)
       network_tier = "PREMIUM"
     }
   }
@@ -191,11 +192,22 @@ resource "google_compute_firewall" "vpc_outside_ingress_allow_https" {
 }
 
 /******************************************
-  IP address reservation
+  Public IP addresses reservation, not ephemeral
  *****************************************/
 
-resource "google_compute_address" "public_default" {
-  count   = true ? length(var.addresses_names) : 0
+resource "google_compute_address" "public_static_ip_mgmt" {
+  count = var.public_static_ips == null ? 1 : 0
+
+  name         = "${var.name}-public-mgmt-ip-${count.index}"
+  address_type = "EXTERNAL"
+  project      = var.project_id
+  region       = var.region
+}
+
+resource "google_compute_address" "public_static_ip_outside" {
+  count = var.public_static_ips == null ? 1 : 0
+
+  name    = "${var.name}-public-outside-ip-${count.index}"
   project = var.project_id
-  name    = "${var.name}-${var.addresses_names[count.index]}"
+  region  = var.region
 }

@@ -71,13 +71,13 @@ variable "outside_subnetwork_cidr" {
   type        = string
 }
 
-variable "addresses_names" {
-  description = "List of Global IP (Public) addresses for external management and outside interfaces"
-  type        = list(string)
-  default = [
-    "external-public-management-ip",
-    "external-public-outside-ip",
-  ]
+variable "public_static_ips" {
+  description = "The existing public static IPs to use on the ASAv mgmt and outside interfaces. By default this module create one if undefined."
+  type = object({
+    mgmt    = string
+    outside = string
+  })
+  default = null
 }
 
 variable "public_ip_whitelist_mgmt_access" {
@@ -132,6 +132,8 @@ variable "source_image" {
   description = <<EOT
   Image of the ASAv which is to be used in the project.
   GCP public URL image for cisco asav https://www.googleapis.com/compute/v1/projects/cisco-public/global/images/cisco-asav-9-xy-z
+  For more details regarding available cisco asav versions in the GCP, please run the following command:
+  `gcloud compute images list --filter="name ~ .*cisco-asav-.*" --project cisco-public`
   The module has been tested with the following ASA version, other versions may or may not work correctly.
   Example: "cisco-asav-9-15-1-15"
            "cisco-asav-9-16-1-28"

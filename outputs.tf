@@ -11,12 +11,12 @@ output "admin_password" {
 
 output "asa_external_mgmt_ip" {
   description = "address value create for external mgmt access"
-  value       = google_compute_address.public_default[0].address
+  value       = try(var.public_static_ips.mgmt, google_compute_address.public_static_ip_mgmt[0].address, null)
 }
 
 output "asa_external_outside_ip" {
   description = "address value create for external outside"
-  value       = google_compute_address.public_default[1].address
+  value       = try(var.public_static_ips.outside, google_compute_address.public_static_ip_outside[0].address, null)
 }
 
 output "workstation_public_ip" {

@@ -72,9 +72,4 @@ module "ciscoasav" {
   outside_subnetwork      = local.vpc.outside.subnetwork_name
   outside_subnetwork_cidr = local.vpc.outside.subnetwork_ip_cidr_range
 
-  depends_on = [
-    module.vpc_management,
-    module.vpc_inside,
-    module.vpc_outside,
-  ]
 }
