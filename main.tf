@@ -7,6 +7,12 @@ locals {
   # If password is not set, use the generated password by the module secrets
   admin_password  = var.admin_password == null ? module.admin_password.secret_data : var.admin_password
   enable_password = var.enable_password == null ? module.enable_password.secret_data : var.enable_password
+
+  # TODO: Use custom service accounts that have limited scope and permissions granted via IAM Roles.
+  service_account_email = var.service_account_email == null ? "${var.project_number}-compute@developer.gserviceaccount.com" : var.service_account_email
+
+  vpc_project         = var.vpc_project == null ? var.project_id : var.vpc_project
+  compute_service_url = "https://www.googleapis.com/compute/v1"
 }
 
 /******************************************
@@ -40,6 +46,30 @@ module "admin_password" {
   secret_id  = "${var.name}-admin-password"
 }
 
+
+/******************************************
+	data resources
+ *****************************************/
+
+data "google_compute_subnetwork" "mgmt" {
+  name    = var.subnetwork_names.mgmt
+  project = var.project_id
+  region  = var.region
+}
+
+data "google_compute_subnetwork" "inside" {
+  name    = var.subnetwork_names.inside
+  project = var.project_id
+  region  = var.region
+}
+
+data "google_compute_subnetwork" "outside" {
+  name    = var.subnetwork_names.outside
+  project = var.project_id
+  region  = var.region
+}
+
+
 /******************************************
 	data template file
  *****************************************/
@@ -48,8 +78,8 @@ locals {
 
   initial_config = templatefile("${path.module}/template/initial_config.tpl", {
     hostname                         = var.name
-    inside_subnetwork_cidr           = var.inside_subnetwork_cidr
-    outside_subnetwork_cidr          = var.outside_subnetwork_cidr
+    inside_subnetwork_cidr           = data.google_compute_subnetwork.inside.ip_cidr_range
+    outside_subnetwork_cidr          = data.google_compute_subnetwork.outside.ip_cidr_range
     vpn_ip_pool_start                = cidrhost(var.vpn_pool_cidr, var.vpn_pool_reserve_start_ip)
     vpn_ip_pool_end                  = cidrhost(var.vpn_pool_cidr, var.vpn_pool_reserve_end_ip)
     vpn_pool_netmask                 = cidrnetmask(var.vpn_pool_cidr)
@@ -98,7 +128,7 @@ resource "google_compute_instance" "asav_vm" {
 
   boot_disk {
     initialize_params {
-      image  = "${var.compute_service_url}/projects/cisco-public/global/images/${var.source_image}"
+      image  = "${local.compute_service_url}/projects/cisco-public/global/images/${var.source_image}"
       labels = var.disk_labels
       size   = var.disk_size_gb
       type   = var.disk_type
@@ -106,8 +136,8 @@ resource "google_compute_instance" "asav_vm" {
   }
   # "nic0 vpc mgmt"
   network_interface {
-    network    = "${var.compute_service_url}/projects/${var.project_id}/global/networks/${var.mgmt_network}"
-    subnetwork = "${var.compute_service_url}/projects/${var.project_id}/regions/${var.region}/subnetworks/${var.mgmt_subnetwork}"
+    network    = data.google_compute_subnetwork.mgmt.network
+    subnetwork = "${local.compute_service_url}/projects/${local.vpc_project}/regions/${var.region}/subnetworks/${var.subnetwork_names.mgmt}"
 
     access_config {
       nat_ip       = try(var.public_static_ips.mgmt, google_compute_address.public_static_ip_mgmt[0].address, null)
@@ -117,13 +147,13 @@ resource "google_compute_instance" "asav_vm" {
   }
   # "nic1 vpc inside"
   network_interface {
-    network    = "${var.compute_service_url}/projects/${var.project_id}/global/networks/${var.inside_network}"
-    subnetwork = "${var.compute_service_url}/projects/${var.project_id}/regions/${var.region}/subnetworks/${var.inside_subnetwork}"
+    network    = data.google_compute_subnetwork.inside.network
+    subnetwork = "${local.compute_service_url}/projects/${local.vpc_project}/regions/${var.region}/subnetworks/${var.subnetwork_names.inside}"
   }
   # "nic2 vpc outside"
   network_interface {
-    network    = "${var.compute_service_url}/projects/${var.project_id}/global/networks/${var.outside_network}"
-    subnetwork = "${var.compute_service_url}/projects/${var.project_id}/regions/${var.region}/subnetworks/${var.outside_subnetwork}"
+    network    = data.google_compute_subnetwork.outside.network
+    subnetwork = "${local.compute_service_url}/projects/${local.vpc_project}/regions/${var.region}/subnetworks/${var.subnetwork_names.outside}"
 
     access_config {
       nat_ip       = try(var.public_static_ips.outside, google_compute_address.public_static_ip_outside[0].address, null)
@@ -137,14 +167,8 @@ resource "google_compute_instance" "asav_vm" {
     preemptible         = false
   }
   service_account {
-    # TODO: Use custom service accounts that have limited scope and permissions granted via IAM Roles.
-    email = "${var.project_number}-compute@developer.gserviceaccount.com"
-    scopes = [
-      "https://www.googleapis.com/auth/cloud.useraccounts.readonly",
-      "https://www.googleapis.com/auth/devstorage.read_only",
-      "https://www.googleapis.com/auth/logging.write",
-      "https://www.googleapis.com/auth/monitoring.write",
-    ]
+    email  = local.service_account_email
+    scopes = var.scopes
   }
 }
 
@@ -156,7 +180,7 @@ resource "google_compute_instance" "asav_vm" {
 resource "google_compute_firewall" "asav_deployment_tcp_https" {
   project       = var.project_id
   name          = "${var.name}-tcp-22-443"
-  network       = var.mgmt_network
+  network       = data.google_compute_subnetwork.mgmt.network
   description   = "Rules to allow SSH and HTTPS connections while deploying or managing the ASAv instance"
   direction     = "INGRESS"
   priority      = 1000
@@ -172,7 +196,7 @@ resource "google_compute_firewall" "asav_deployment_tcp_https" {
 resource "google_compute_firewall" "vpc_outside_ingress_allow_https" {
   project     = var.project_id
   name        = "${var.name}-any-outside-tcp-udp-443"
-  network     = var.outside_network
+  network     = data.google_compute_subnetwork.outside.network
   description = "Rules to allow HTTPS from anywhere"
   direction   = "INGRESS"
   priority    = 1000

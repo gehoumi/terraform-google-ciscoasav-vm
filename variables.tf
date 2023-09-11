@@ -26,49 +26,22 @@ variable "zone" {
   default     = "us-central1-a"
 }
 
-variable "mgmt_network" {
-  description = "The name of the VPC network to attach the ASAv mgmt interface"
-  type        = string
+variable "subnetwork_names" {
+  description = <<-EOF
+  The name of the required subnetworks, The subnetworks must below to the VPC management, inside  and outside.
+  EOF
+  type = object({
+    mgmt    = string
+    inside  = string
+    outside = string
+  })
+  default = null
 }
 
-variable "mgmt_subnetwork" {
-  description = "The subnetwork name of the mgmt subnetwork"
+variable "vpc_project" {
+  description = "The Host Project name where the VPC are created. if not provide the module use to 'project_id"
   type        = string
-}
-
-variable "mgmt_subnetwork_cidr" {
-  description = "The subnetwork cidr of the mgmt subnetwork"
-  type        = string
-}
-
-variable "inside_network" {
-  description = "The name of the VPC network to attach the ASAv inside interface"
-  type        = string
-}
-
-variable "inside_subnetwork_cidr" {
-  description = "The subnetwork cidr of the inside subnetwork"
-  type        = string
-}
-
-variable "inside_subnetwork" {
-  description = "The subnetwork name of the inside subnetwork"
-  type        = string
-}
-
-variable "outside_network" {
-  description = "The name of the VPC network to attach the ASAv Outside interface"
-  type        = string
-}
-
-variable "outside_subnetwork" {
-  description = "The subnetwork name of the outside subnetwork"
-  type        = string
-}
-
-variable "outside_subnetwork_cidr" {
-  description = "The subnetwork cidr of the outside subnetwork"
-  type        = string
+  default     = null
 }
 
 variable "public_static_ips" {
@@ -99,21 +72,15 @@ variable "vpn_pool_cidr" {
 }
 
 variable "vpn_pool_reserve_start_ip" {
-  description = "The number of IPs to be reserved from the start of VPN pool. Default is to reserve the 10 first IPs"
+  description = "The number of IPs to be reserved from the start of VPN pool. Default is not to reserve anything from start IP"
   type        = number
-  default     = 10
+  default     = 1
 }
 
 variable "vpn_pool_reserve_end_ip" {
   description = "The number of IPs to be reserved from the end of VPN pool. Default is not to reserve anything from the end"
   type        = number
   default     = -2
-}
-
-variable "compute_service_url" {
-  type        = string
-  description = "The compute service URL"
-  default     = "https://www.googleapis.com/compute/v1"
 }
 
 variable "labels" {
@@ -127,6 +94,24 @@ variable "machine_type" {
   description = "Instance type for the ASAv instance"
   default     = "n2-standard-4"
 }
+
+variable "service_account_email" {
+  description = "Email of Service Account for running instance. Default is to use google managed service account "
+  type        = string
+  default     = null
+
+}
+
+variable "scopes" {
+  type = list(string)
+  default = [
+    "https://www.googleapis.com/auth/cloud.useraccounts.readonly",
+    "https://www.googleapis.com/auth/devstorage.read_only",
+    "https://www.googleapis.com/auth/logging.write",
+    "https://www.googleapis.com/auth/monitoring.write",
+  ]
+}
+
 
 variable "source_image" {
   description = <<EOT

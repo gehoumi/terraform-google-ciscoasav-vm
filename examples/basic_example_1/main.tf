@@ -60,16 +60,10 @@ module "ciscoasav" {
   project_id     = var.project_id
   project_number = var.project_number
 
-  mgmt_network         = local.vpc.management.network_name
-  mgmt_subnetwork      = local.vpc.management.subnetwork_name
-  mgmt_subnetwork_cidr = local.vpc.management.subnetwork_ip_cidr_range
-
-  inside_network         = local.vpc.inside.network_name
-  inside_subnetwork      = local.vpc.inside.subnetwork_name
-  inside_subnetwork_cidr = local.vpc.inside.subnetwork_ip_cidr_range
-
-  outside_network         = local.vpc.outside.network_name
-  outside_subnetwork      = local.vpc.outside.subnetwork_name
-  outside_subnetwork_cidr = local.vpc.outside.subnetwork_ip_cidr_range
+  subnetwork_names = {
+    mgmt    = local.vpc.management.subnetwork_name
+    inside  = local.vpc.inside.subnetwork_name
+    outside = local.vpc.outside.subnetwork_name
+  }
 
 }

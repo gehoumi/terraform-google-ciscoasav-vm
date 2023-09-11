@@ -154,6 +154,9 @@ The external SSH access to ASA management Public IP is protected by firewall rul
 | [google_compute_firewall.asav_deployment_tcp_https](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall) | resource |
 | [google_compute_firewall.vpc_outside_ingress_allow_https](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall) | resource |
 | [google_compute_instance.asav_vm](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_instance) | resource |
+| [google_compute_subnetwork.inside](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/compute_subnetwork) | data source |
+| [google_compute_subnetwork.mgmt](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/compute_subnetwork) | data source |
+| [google_compute_subnetwork.outside](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/compute_subnetwork) | data source |
 | [http_http.workstation_public_ip](https://registry.terraform.io/providers/hashicorp/http/latest/docs/data-sources/http) | data source |
 
 ## Inputs
@@ -162,36 +165,30 @@ The external SSH access to ASA management Public IP is protected by firewall rul
 |------|-------------|------|---------|:--------:|
 | <a name="input_admin_password"></a> [admin\_password](#input\_admin\_password) | ASAv administrator password | `string` | `null` | no |
 | <a name="input_admin_username"></a> [admin\_username](#input\_admin\_username) | ASAv administrator username. Default is admin | `string` | `"admin"` | no |
-| <a name="input_compute_service_url"></a> [compute\_service\_url](#input\_compute\_service\_url) | The compute service URL | `string` | `"https://www.googleapis.com/compute/v1"` | no |
 | <a name="input_disk_labels"></a> [disk\_labels](#input\_disk\_labels) | Labels to be assigned to boot disk, provided as a map | `map(string)` | `{}` | no |
 | <a name="input_disk_size_gb"></a> [disk\_size\_gb](#input\_disk\_size\_gb) | Boot disk size in GB | `string` | `"10"` | no |
 | <a name="input_disk_type"></a> [disk\_type](#input\_disk\_type) | Boot disk type | `string` | `"pd-standard"` | no |
 | <a name="input_enable_password"></a> [enable\_password](#input\_enable\_password) | The ASAv enable password | `string` | `null` | no |
 | <a name="input_gcp_private_supernet_cidr"></a> [gcp\_private\_supernet\_cidr](#input\_gcp\_private\_supernet\_cidr) | The GCP private internal supernet that should be accessible by the remote anyconnect VPN clients | `string` | `"10.0.0.0/8"` | no |
-| <a name="input_inside_network"></a> [inside\_network](#input\_inside\_network) | The name of the VPC network to attach the ASAv inside interface | `string` | n/a | yes |
-| <a name="input_inside_subnetwork"></a> [inside\_subnetwork](#input\_inside\_subnetwork) | The subnetwork name of the inside subnetwork | `string` | n/a | yes |
-| <a name="input_inside_subnetwork_cidr"></a> [inside\_subnetwork\_cidr](#input\_inside\_subnetwork\_cidr) | The subnetwork cidr of the inside subnetwork | `string` | n/a | yes |
 | <a name="input_labels"></a> [labels](#input\_labels) | Key-value map of labels to assign to the ASAv instance | `map(string)` | `{}` | no |
 | <a name="input_machine_type"></a> [machine\_type](#input\_machine\_type) | Instance type for the ASAv instance | `string` | `"n2-standard-4"` | no |
-| <a name="input_mgmt_network"></a> [mgmt\_network](#input\_mgmt\_network) | The name of the VPC network to attach the ASAv mgmt interface | `string` | n/a | yes |
-| <a name="input_mgmt_subnetwork"></a> [mgmt\_subnetwork](#input\_mgmt\_subnetwork) | The subnetwork name of the mgmt subnetwork | `string` | n/a | yes |
-| <a name="input_mgmt_subnetwork_cidr"></a> [mgmt\_subnetwork\_cidr](#input\_mgmt\_subnetwork\_cidr) | The subnetwork cidr of the mgmt subnetwork | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | The hostname to assign to the Cisco ASAv | `string` | `"ciscoasav-1"` | no |
-| <a name="input_outside_network"></a> [outside\_network](#input\_outside\_network) | The name of the VPC network to attach the ASAv Outside interface | `string` | n/a | yes |
-| <a name="input_outside_subnetwork"></a> [outside\_subnetwork](#input\_outside\_subnetwork) | The subnetwork name of the outside subnetwork | `string` | n/a | yes |
-| <a name="input_outside_subnetwork_cidr"></a> [outside\_subnetwork\_cidr](#input\_outside\_subnetwork\_cidr) | The subnetwork cidr of the outside subnetwork | `string` | n/a | yes |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | The ID of the Project to which the resources belong | `string` | n/a | yes |
 | <a name="input_project_number"></a> [project\_number](#input\_project\_number) | The Project number to which the resources belong | `string` | n/a | yes |
 | <a name="input_public_ip_whitelist_mgmt_access"></a> [public\_ip\_whitelist\_mgmt\_access](#input\_public\_ip\_whitelist\_mgmt\_access) | List of Public IP address to that need to manage ASAv instance. Default is your workstation public IP | `list(string)` | `null` | no |
 | <a name="input_public_static_ips"></a> [public\_static\_ips](#input\_public\_static\_ips) | The existing public static IPs to use on the ASAv mgmt and outside interfaces. By default this module create one if undefined. | <pre>object({<br>    mgmt    = string<br>    outside = string<br>  })</pre> | `null` | no |
 | <a name="input_region"></a> [region](#input\_region) | The region to construct the ASAv resources in | `string` | `"us-central1"` | no |
+| <a name="input_scopes"></a> [scopes](#input\_scopes) | n/a | `list(string)` | <pre>[<br>  "https://www.googleapis.com/auth/cloud.useraccounts.readonly",<br>  "https://www.googleapis.com/auth/devstorage.read_only",<br>  "https://www.googleapis.com/auth/logging.write",<br>  "https://www.googleapis.com/auth/monitoring.write"<br>]</pre> | no |
+| <a name="input_service_account_email"></a> [service\_account\_email](#input\_service\_account\_email) | Email of Service Account for running instance. Default is to use google managed service account | `string` | `null` | no |
 | <a name="input_smart_account_registration_token"></a> [smart\_account\_registration\_token](#input\_smart\_account\_registration\_token) | The Smart Account registration token ID to activate the license | `string` | `""` | no |
 | <a name="input_source_image"></a> [source\_image](#input\_source\_image) | Image of the ASAv which is to be used in the project.<br>  GCP public URL image for cisco asav https://www.googleapis.com/compute/v1/projects/cisco-public/global/images/cisco-asav-9-xy-z<br>  For more details regarding available cisco asav versions in the GCP, please run the following command:<br>  `gcloud compute images list --filter="name ~ .*cisco-asav-.*" --project cisco-public`<br>  The module has been tested with the following ASA version, other versions may or may not work correctly.<br>  Example: "cisco-asav-9-15-1-15"<br>           "cisco-asav-9-16-1-28"<br>           "cisco-asav-9-17-1"<br>           "cisco-asav-9-18-1" | `string` | `"cisco-asav-9-19-1"` | no |
 | <a name="input_ssh_key"></a> [ssh\_key](#input\_ssh\_key) | The SSH public key to use to login to the instance. The maximum keysize is 2048 bits<br>   because ASA CLI will not allow more than 512 chars input on a single line.<br>   Enter only the part without spaces e.g AAAAB3NzaC1yc2EAAAAD.... | `string` | `""` | no |
+| <a name="input_subnetwork_names"></a> [subnetwork\_names](#input\_subnetwork\_names) | The name of the required subnetworks, The subnetworks must below to the VPC management, inside  and outside. | <pre>object({<br>    mgmt    = string<br>    inside  = string<br>    outside = string<br>  })</pre> | `null` | no |
 | <a name="input_throughput_level"></a> [throughput\_level](#input\_throughput\_level) | The throughput level based on the instance size, the maximum supported vCPUs is 16 | `map(string)` | <pre>{<br>  "n2-standard-16": "10G",<br>  "n2-standard-4": "1G",<br>  "n2-standard-8": "2G"<br>}</pre> | no |
+| <a name="input_vpc_project"></a> [vpc\_project](#input\_vpc\_project) | The Host Project name where the VPC are created. if not provide the module use to 'project\_id | `string` | `null` | no |
 | <a name="input_vpn_pool_cidr"></a> [vpn\_pool\_cidr](#input\_vpn\_pool\_cidr) | The VPN Pool CIDR network to assign the remote anyconnect VPN clients | `string` | `"10.100.0.0/24"` | no |
 | <a name="input_vpn_pool_reserve_end_ip"></a> [vpn\_pool\_reserve\_end\_ip](#input\_vpn\_pool\_reserve\_end\_ip) | The number of IPs to be reserved from the end of VPN pool. Default is not to reserve anything from the end | `number` | `-2` | no |
-| <a name="input_vpn_pool_reserve_start_ip"></a> [vpn\_pool\_reserve\_start\_ip](#input\_vpn\_pool\_reserve\_start\_ip) | The number of IPs to be reserved from the start of VPN pool. Default is to reserve the 10 first IPs | `number` | `10` | no |
+| <a name="input_vpn_pool_reserve_start_ip"></a> [vpn\_pool\_reserve\_start\_ip](#input\_vpn\_pool\_reserve\_start\_ip) | The number of IPs to be reserved from the start of VPN pool. Default is not to reserve anything from start IP | `number` | `1` | no |
 | <a name="input_zone"></a> [zone](#input\_zone) | The zone to construct the ASAv resources in | `string` | `"us-central1-a"` | no |
 
 ## Outputs
