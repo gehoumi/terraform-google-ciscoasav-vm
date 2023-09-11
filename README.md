@@ -73,22 +73,16 @@ Basic usage of this module is as follows :
 ```hcl
 module "ciscoasav" {
   source         = "gehoumi/ciscoasav-vm/google"
-  version        = "1.0.7"
+
   name           = "cisco-asav-1"
-  project_id     = var.project_id
-  project_number = var.project_number
+  project_id     = "my-project"
+  project_number = "4567890954"
 
-  mgmt_network         = local.vpc.management.network_name
-  mgmt_subnetwork      = local.vpc.management.subnetwork_name
-  mgmt_subnetwork_cidr = local.vpc.management.subnetwork_ip_cidr_range
-
-  inside_network         = local.vpc.inside.network_name
-  inside_subnetwork      = local.vpc.inside.subnetwork_name
-  inside_subnetwork_cidr = local.vpc.inside.subnetwork_ip_cidr_range
-
-  outside_network         = local.vpc.outside.network_name
-  outside_subnetwork      = local.vpc.outside.subnetwork_name
-  outside_subnetwork_cidr = local.vpc.outside.subnetwork_ip_cidr_range
+  subnetwork_names = {
+    mgmt    = "my-vpc-mgmt-subnet-01-us-central1"
+    inside  = "my-vpc-inside-subnet-01-us-central1"
+    outside = "my-vpc-outside-subnet-01-us-central1"
+  }
 
 }
 ```
@@ -97,7 +91,7 @@ As explain in [basic_example_1](https://github.com/gehoumi/terraform-google-cisc
 similar to the following:
 
 ```
-$ gcloud secrets versions access latest --secret=<asa_hostname>-admin-password --project=<project-id>
+$ gcloud secrets versions access latest --secret=<asa_hostname>-admin-password --project=<my-projec>
 
 ```
 
