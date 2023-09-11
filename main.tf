@@ -9,7 +9,7 @@ locals {
   enable_password = var.enable_password == null ? module.enable_password.secret_data : var.enable_password
 
   # TODO: Use custom service accounts that have limited scope and permissions granted via IAM Roles.
-  service_account_email = var.service_account_email == null ? "${var.project_number}-compute@developer.gserviceaccount.com" : var.service_account_email
+  service_account_email = var.service_account_email == null ? "${data.google_project.project.number}-compute@developer.gserviceaccount.com" : var.service_account_email
 
   vpc_project         = var.vpc_project == null ? var.project_id : var.vpc_project
   compute_service_url = "https://www.googleapis.com/compute/v1"
@@ -50,6 +50,10 @@ module "admin_password" {
 /******************************************
 	data resources
  *****************************************/
+
+data "google_project" "project" {
+  project_id = var.project_id
+}
 
 data "google_compute_subnetwork" "mgmt" {
   name    = var.subnetwork_names.mgmt

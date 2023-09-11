@@ -76,7 +76,6 @@ module "ciscoasav" {
 
   name           = "cisco-asav-1"
   project_id     = "my-project"
-  project_number = "4567890954"
 
   subnetwork_names = {
     mgmt    = "my-vpc-mgmt-subnet-01-us-central1"
@@ -151,6 +150,7 @@ The external SSH access to ASA management Public IP is protected by firewall rul
 | [google_compute_subnetwork.inside](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/compute_subnetwork) | data source |
 | [google_compute_subnetwork.mgmt](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/compute_subnetwork) | data source |
 | [google_compute_subnetwork.outside](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/compute_subnetwork) | data source |
+| [google_project.project](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/project) | data source |
 | [http_http.workstation_public_ip](https://registry.terraform.io/providers/hashicorp/http/latest/docs/data-sources/http) | data source |
 
 ## Inputs
@@ -168,7 +168,6 @@ The external SSH access to ASA management Public IP is protected by firewall rul
 | <a name="input_machine_type"></a> [machine\_type](#input\_machine\_type) | Instance type for the ASAv instance | `string` | `"n2-standard-4"` | no |
 | <a name="input_name"></a> [name](#input\_name) | The hostname to assign to the Cisco ASAv | `string` | `"ciscoasav-1"` | no |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | The ID of the Project to which the resources belong | `string` | n/a | yes |
-| <a name="input_project_number"></a> [project\_number](#input\_project\_number) | The Project number to which the resources belong | `string` | n/a | yes |
 | <a name="input_public_ip_whitelist_mgmt_access"></a> [public\_ip\_whitelist\_mgmt\_access](#input\_public\_ip\_whitelist\_mgmt\_access) | List of Public IP address to that need to manage ASAv instance. Default is your workstation public IP | `list(string)` | `null` | no |
 | <a name="input_public_static_ips"></a> [public\_static\_ips](#input\_public\_static\_ips) | The existing public static IPs to use on the ASAv mgmt and outside interfaces. By default this module create one if undefined. | <pre>object({<br>    mgmt    = string<br>    outside = string<br>  })</pre> | `null` | no |
 | <a name="input_region"></a> [region](#input\_region) | The region to construct the ASAv resources in | `string` | `"us-central1"` | no |

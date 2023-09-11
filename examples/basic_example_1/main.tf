@@ -55,10 +55,9 @@ module "vpc_outside" {
  *****************************************/
 
 module "ciscoasav" {
-  source         = "../.."
-  name           = "cisco-asav-1"
-  project_id     = var.project_id
-  project_number = var.project_number
+  source     = "../.."
+  name       = "cisco-asav-1"
+  project_id = var.project_id
 
   subnetwork_names = {
     mgmt    = local.vpc.management.subnetwork_name

@@ -55,15 +55,14 @@ module "vpc_outside" {
  *****************************************/
 
 module "ciscoasav" {
-  source         = "../.."
-  name           = "cisco-asav-1"
-  project_id     = var.project_id
-  project_number = var.project_number
+  source     = "../.."
+  name       = "cisco-asav-1"
+  project_id = var.project_id
 
   subnetwork_names = {
-    mgmt    = local.vpc.management.subnetwork_name
-    inside  = local.vpc.inside.subnetwork_name
-    outside = local.vpc.outside.subnetwork_name
+    mgmt    = "my-vpc-mgmt-subnet-01-us-central1"
+    inside  = "my-vpc-inside-subnet-01-us-central1"
+    outside = "my-vpc-outside-subnet-01-us-central1"
   }
 
   public_static_ips = {

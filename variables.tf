@@ -9,11 +9,6 @@ variable "project_id" {
   type        = string
 }
 
-variable "project_number" {
-  description = "The Project number to which the resources belong"
-  type        = string
-}
-
 variable "region" {
   description = "The region to construct the ASAv resources in"
   type        = string
