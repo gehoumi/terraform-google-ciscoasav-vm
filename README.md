@@ -1,4 +1,6 @@
-[![published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/gehoumi/terraform-google-ciscoasav-vm) [![Github tag](https://img.shields.io/github/tag/gehoumi/terraform-google-ciscoasav-vm.svg)](https://github.com/gehoumi/terraform-google-ciscoasav-vm/releases)
+[![published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/gehoumi/terraform-google-ciscoasav-vm) 
+[![Run in Cisco Cloud IDE](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-runable-icon.svg)](https://developer.cisco.com/codeexchange/devenv/gehoumi/terraform-google-ciscoasav-vm/)
+[![Github tag](https://img.shields.io/github/tag/gehoumi/terraform-google-ciscoasav-vm.svg)](https://github.com/gehoumi/terraform-google-ciscoasav-vm/releases)
 # Automated Cisco ASAv deployment on GCP with Terraform
 [Terraform module](https://registry.terraform.io/modules/gehoumi/ciscoasav-vm/google/latest) to deploy Cisco Adaptive Security Virtual Appliance (ASAv) on Google Cloud Platform (GCP) for remote access IPSec/SSL VPN clients.
 
@@ -147,10 +149,10 @@ The external SSH access to ASA management Public IP is protected by firewall rul
 | [google_compute_firewall.asav_deployment_tcp_https](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall) | resource |
 | [google_compute_firewall.vpc_outside_ingress_allow_https](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall) | resource |
 | [google_compute_instance.asav_vm](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_instance) | resource |
+| [google_compute_default_service_account.default](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/compute_default_service_account) | data source |
 | [google_compute_subnetwork.inside](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/compute_subnetwork) | data source |
 | [google_compute_subnetwork.mgmt](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/compute_subnetwork) | data source |
 | [google_compute_subnetwork.outside](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/compute_subnetwork) | data source |
-| [google_project.project](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/project) | data source |
 | [http_http.workstation_public_ip](https://registry.terraform.io/providers/hashicorp/http/latest/docs/data-sources/http) | data source |
 
 ## Inputs
@@ -172,7 +174,7 @@ The external SSH access to ASA management Public IP is protected by firewall rul
 | <a name="input_public_static_ips"></a> [public\_static\_ips](#input\_public\_static\_ips) | The existing public static IPs to use on the ASAv mgmt and outside interfaces. By default this module create one if undefined. | <pre>object({<br>    mgmt    = string<br>    outside = string<br>  })</pre> | `null` | no |
 | <a name="input_region"></a> [region](#input\_region) | The region to construct the ASAv resources in | `string` | `"us-central1"` | no |
 | <a name="input_scopes"></a> [scopes](#input\_scopes) | n/a | `list(string)` | <pre>[<br>  "https://www.googleapis.com/auth/cloud.useraccounts.readonly",<br>  "https://www.googleapis.com/auth/devstorage.read_only",<br>  "https://www.googleapis.com/auth/logging.write",<br>  "https://www.googleapis.com/auth/monitoring.write"<br>]</pre> | no |
-| <a name="input_service_account_email"></a> [service\_account\_email](#input\_service\_account\_email) | Email of Service Account for running instance. Default is to use google managed service account | `string` | `null` | no |
+| <a name="input_service_account_email"></a> [service\_account\_email](#input\_service\_account\_email) | Email of Service Account for running instance. Default is to use google managed default service account | `string` | `null` | no |
 | <a name="input_smart_account_registration_token"></a> [smart\_account\_registration\_token](#input\_smart\_account\_registration\_token) | The Smart Account registration token ID to activate the license | `string` | `""` | no |
 | <a name="input_source_image"></a> [source\_image](#input\_source\_image) | Image of the ASAv which is to be used in the project.<br>  GCP public URL image for cisco asav https://www.googleapis.com/compute/v1/projects/cisco-public/global/images/cisco-asav-9-xy-z<br>  For more details regarding available cisco asav versions in the GCP, please run the following command:<br>  `gcloud compute images list --filter="name ~ .*cisco-asav-.*" --project cisco-public`<br>  The module has been tested with the following ASA version, other versions may or may not work correctly.<br>  Example: "cisco-asav-9-15-1-15"<br>           "cisco-asav-9-16-1-28"<br>           "cisco-asav-9-17-1"<br>           "cisco-asav-9-18-1" | `string` | `"cisco-asav-9-19-1"` | no |
 | <a name="input_ssh_key"></a> [ssh\_key](#input\_ssh\_key) | The SSH public key to use to login to the instance. The maximum keysize is 2048 bits<br>   because ASA CLI will not allow more than 512 chars input on a single line.<br>   Enter only the part without spaces e.g AAAAB3NzaC1yc2EAAAAD.... | `string` | `""` | no |

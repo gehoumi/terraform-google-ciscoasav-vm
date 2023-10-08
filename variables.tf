@@ -91,7 +91,7 @@ variable "machine_type" {
 }
 
 variable "service_account_email" {
-  description = "Email of Service Account for running instance. Default is to use google managed service account "
+  description = "Email of Service Account for running instance. Default is to use google managed default service account "
   type        = string
   default     = null
 
