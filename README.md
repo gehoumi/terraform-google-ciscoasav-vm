@@ -2,6 +2,7 @@
 [![Run in Cisco Cloud IDE](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-runable-icon.svg?style=flat-square)](https://developer.cisco.com/codeexchange/devenv/gehoumi/terraform-google-ciscoasav-vm/)
 [![Github tag](https://img.shields.io/github/tag/gehoumi/terraform-google-ciscoasav-vm.svg?style=flat-square)](https://github.com/gehoumi/terraform-google-ciscoasav-vm/releases)
 ![Terraform registry downloads total](https://img.shields.io/badge/dynamic/json?color=green&label=downloads%20total&query=data.attributes.total&url=https%3A%2F%2Fregistry.terraform.io%2Fv2%2Fmodules%2Fgehoumi%2Fciscoasav-vm%2Fgoogle%2Fdownloads%2Fsummary&style=flat-square)
+[![My Public profile](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white&style=flat-square)](https://www.linkedin.com/in/gehoumi)
 # Automated Cisco ASAv deployment on GCP with Terraform
 [Terraform module](https://registry.terraform.io/modules/gehoumi/ciscoasav-vm/google/latest) to deploy Cisco Adaptive Security Virtual Appliance (ASAv) on Google Cloud Platform (GCP) for remote access IPSec/SSL VPN clients.
 
